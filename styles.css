@@ -51,3 +51,44 @@ button{cursor:pointer}
 .checkin-toggle{display:flex;gap:6px}.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--muted);margin-right:6px}.status-dot.ok{background:var(--success)}.status-dot.warn{background:var(--warning)}
 @media (max-width:1100px){.app-shell{grid-template-columns:210px 1fr}.board-grid,.grid-6{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}.group-grid{grid-template-columns:1fr}.beamer-board-grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:760px){.app-shell{display:block}.sidebar{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border)}.nav{display:grid;grid-template-columns:repeat(2,1fr)}.sidebar-footer{display:none}.main{padding:18px}.topbar{align-items:flex-start;flex-direction:column}.board-grid,.grid-2,.grid-3,.grid-4,.grid-6,.form-grid,.board-control,.big-choice,.beamer-board-grid{grid-template-columns:1fr}.table{min-width:640px}}
+
+/* Testbare Rollenansichten */
+.view-switcher{display:flex;align-items:center;gap:8px;padding:5px 6px 5px 10px;border:1px solid var(--border);border-radius:12px;background:var(--panel)}
+.select-compact{width:auto;min-width:165px;padding:7px 30px 7px 9px}
+.app-shell.special-mode{grid-template-columns:1fr}
+.app-shell.special-mode .sidebar{display:none}
+.app-shell.special-mode .main{max-width:1500px;width:100%;margin:0 auto}
+.special-toolbar,.player-testbar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:16px}
+.special-toolbar .tabs{margin:0}
+.compact-tabs{justify-content:flex-end}
+.live-strip{display:flex;align-items:center;justify-content:center;gap:7px;margin:-5px 0 18px;color:#70dfa4;font-size:13px;font-weight:700}
+.live-duration{white-space:nowrap}
+.player-select{max-width:330px}
+.player-hero{background:linear-gradient(135deg,#181d25,#101318);border:1px solid var(--border);border-radius:22px;padding:26px;margin-bottom:16px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.player-hero:after{content:"";position:absolute;width:230px;height:230px;border-radius:50%;right:-90px;top:-100px;background:rgba(255,255,255,.025)}
+.player-hero.soon{border-color:#60512f}.player-hero.next{border-color:#7b5d25}.player-hero.now{border-color:#257c54;box-shadow:0 0 0 1px rgba(45,191,118,.12),var(--shadow)}
+.player-kicker{text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-size:11px;font-weight:800}
+.player-hero h3{font-size:30px;margin:7px 0 18px}
+.player-status{font-size:28px;font-weight:900;line-height:1.1;margin-bottom:18px;max-width:700px}
+.player-hero.now .player-status{color:#65dda0}.player-hero.next .player-status{color:#f5c772}.player-hero.soon .player-status{color:#dfc681}
+.player-next-match{display:flex;flex-direction:column;gap:4px;padding:15px 16px;background:rgba(0,0,0,.22);border:1px solid var(--border);border-radius:14px;max-width:560px}
+.player-next-match strong{font-size:20px}
+.player-metrics{margin-bottom:16px}
+.player-tabs{margin-top:20px}
+.player-table{min-width:0}
+.player-table tr.me td{background:rgba(45,191,118,.08)}
+.toggle-line{display:flex;gap:13px;align-items:flex-start;padding:15px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.toggle-line:last-child{border-bottom:0}.toggle-line input{margin-top:4px;transform:scale(1.15)}.toggle-line span{display:flex;flex-direction:column;gap:3px}.toggle-line small{color:var(--muted)}
+.compact-bracket{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 14px}.compact-bracket>.small{grid-column:1/-1}
+.compact-ko{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:9px 10px;font-size:12px}.compact-ko span:last-child{text-align:right}
+.beamer-full{min-height:calc(100vh - 150px)}
+
+@media (max-width:760px){
+  .view-switcher{width:100%;justify-content:space-between}.select-compact{flex:1;min-width:0}
+  .app-shell.special-mode .main{padding:14px}.app-shell.special-mode .topbar{gap:12px;margin-bottom:14px}
+  .special-toolbar,.player-testbar{align-items:stretch;flex-direction:column}.player-select{max-width:none}
+  .compact-tabs{display:grid;grid-template-columns:repeat(3,1fr);width:100%}.compact-tabs button{width:100%}
+  .player-hero{padding:20px}.player-hero h3{font-size:24px}.player-status{font-size:24px}.player-next-match strong{font-size:18px}
+  .player-tabs{display:grid;grid-template-columns:repeat(2,1fr)}.player-tabs button{width:100%}
+  .player-table{min-width:520px}.compact-bracket{grid-template-columns:1fr}
+}

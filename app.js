@@ -54,6 +54,8 @@
   let currentView = 'dashboard';
   let currentGroup = 'A';
   let selectedBoard = 1;
+  let displayMode = 'admin';
+  let selectedPlayerId = null;
 
   function seedParticipants() {
     return Array.from({length:80}, (_,i) => ({
@@ -91,6 +93,7 @@
       lastCompletedByBoard: {1:null,2:null,3:null,4:null,5:null,6:null},
       manualGroupOrder: {},
       knockout: { r32: [], r16: [], qf: [], sf: [], third: [], final: [] },
+      playerPrefs: {},
       audit: []
     };
   }
@@ -117,6 +120,43 @@
   function audit(text){ state.audit.unshift({at:new Date().toISOString(), text}); state.audit = state.audit.slice(0,100); }
   function toast(text,type='success'){ const root=document.getElementById('toastRoot'); const el=document.createElement('div'); el.className=`toast ${type}`; el.textContent=text; root.appendChild(el); setTimeout(()=>el.remove(),3000); }
   function pct(n,d){ return d ? Math.round(n/d*100) : 0; }
+  function elapsedText(iso){
+    if(!iso) return '';
+    const ms=Math.max(0, Date.now()-new Date(iso).getTime());
+    const min=Math.floor(ms/60000);
+    if(min<1) return 'läuft seit < 1 Min.';
+    if(min<60) return `läuft seit ${min} Min.`;
+    const h=Math.floor(min/60), rest=min%60;
+    return `läuft seit ${h} Std.${rest?` ${rest} Min.`:''}`;
+  }
+  function playerGroup(id){ return GROUPS.find(g=>state.groups[g]?.playerIds.includes(id)) || null; }
+  function playerBoard(id){ const g=playerGroup(id); return g ? state.groups[g]?.board : null; }
+  function nextPlayerMatchInfo(id){
+    const board=playerBoard(id);
+    if(!board) return {board:null, match:null, gamesBefore:null, status:'Noch nicht ausgelost'};
+    const schedule=state.boardSchedules[board]||[];
+    const pointer=state.boardPointers[board]||0;
+    let gamesBefore=0;
+    for(let i=pointer;i<schedule.length;i++){
+      const m=findMatch(schedule[i]);
+      if(!m || m.status==='completed') continue;
+      if(m.playerA===id || m.playerB===id){
+        let status='';
+        if(gamesBefore===0) status=m.status==='running'?'Du bist jetzt dran':'Du bist jetzt dran';
+        else if(gamesBefore===1) status='Nach diesem Spiel bist du dran';
+        else if(gamesBefore===2) status='Noch 2 Spiele vor dir';
+        else status=`Noch ${gamesBefore} Spiele vor dir`;
+        return {board,match:m,gamesBefore,status};
+      }
+      gamesBefore++;
+    }
+    return {board,match:null,gamesBefore:null,status:groupComplete(playerGroup(id))?'Gruppenphase für dich beendet':'Kein weiteres Gruppenspiel offen'};
+  }
+  function opponentFor(match,id){ if(!match) return null; return getPlayer(match.playerA===id?match.playerB:match.playerA); }
+  function playerPrefs(id){
+    state.playerPrefs ||= {};
+    return state.playerPrefs[id] ||= {two:true,next:true,now:true};
+  }
 
   function roundRobinMatches(ids, group) {
     const players = [...ids];
@@ -320,12 +360,97 @@
     ph.textContent=state.tournament.phase; ph.className='badge';
   }
   function render(){
+    const shell=document.querySelector('.app-shell');
+    shell?.classList.toggle('special-mode',displayMode!=='admin');
     renderNav(); updateBadges();
-    const meta=NAV.find(x=>x[0]===currentView); document.getElementById('pageTitle').textContent=meta?meta[2]:'Dashboard';
+    const select=document.getElementById('testViewSelect');
+    if(select) select.value=displayMode;
     const content=document.getElementById('content');
-    const views={dashboard:renderDashboard,checkin:renderCheckin,participants:renderParticipants,draw:renderDraw,groups:renderGroups,boards:renderBoards,knockout:renderKnockout,beamer:renderBeamer,sync:renderSync};
-    content.innerHTML=(views[currentView]||renderDashboard)();
+    if(displayMode==='writer'){
+      document.getElementById('pageTitle').textContent=`Schreiberansicht · Board ${selectedBoard}`;
+      content.innerHTML=renderWriterView();
+    } else if(displayMode==='player'){
+      if(!selectedPlayerId) selectedPlayerId=state.participants.find(p=>p.active&&!p.waitlist)?.id || state.participants[0]?.id;
+      document.getElementById('pageTitle').textContent='Spieleransicht';
+      content.innerHTML=renderPlayerView();
+    } else if(displayMode==='beamer'){
+      document.getElementById('pageTitle').textContent='Beameransicht';
+      content.innerHTML=renderBeamer(true);
+    } else {
+      const meta=NAV.find(x=>x[0]===currentView); document.getElementById('pageTitle').textContent=meta?meta[2]:'Dashboard';
+      const views={dashboard:renderDashboard,checkin:renderCheckin,participants:renderParticipants,draw:renderDraw,groups:renderGroups,boards:renderBoards,knockout:renderKnockout,beamer:renderBeamer,sync:renderSync};
+      content.innerHTML=(views[currentView]||renderDashboard)();
+    }
     bindViewHandlers();
+    bindModeHandlers();
+    updateLiveDurations();
+  }
+
+  function bindModeHandlers(){
+    const select=document.getElementById('testViewSelect');
+    if(select) select.onchange=()=>{displayMode=select.value;render();};
+    document.querySelectorAll('[data-test-board]').forEach(b=>b.onclick=()=>{selectedBoard=Number(b.dataset.testBoard);render();});
+    document.getElementById('playerTestSelect')?.addEventListener('change',e=>{selectedPlayerId=e.target.value;render();});
+    document.querySelectorAll('[data-player-pref]').forEach(el=>el.onchange=()=>{
+      const pref=playerPrefs(selectedPlayerId); pref[el.dataset.playerPref]=el.checked; saveState();
+    });
+    document.querySelectorAll('[data-player-tab]').forEach(b=>b.onclick=()=>{
+      document.querySelectorAll('[data-player-tab]').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      document.querySelectorAll('[data-player-panel]').forEach(x=>x.hidden=x.dataset.playerPanel!==b.dataset.playerTab);
+    });
+  }
+
+  function updateLiveDurations(){
+    document.querySelectorAll('[data-started-at]').forEach(el=>el.textContent=elapsedText(el.dataset.startedAt));
+  }
+
+  function renderWriterView(){
+    if(!Object.keys(state.groups).length) return `<div class="empty">Noch keine Auslosung vorhanden. In der echten Version öffnet der Schreiber sein Board über QR-Code/PIN.</div>`;
+    return `<div class="special-toolbar">
+      <div><strong>Schreiber-Test</strong><div class="small muted">Später öffnet jedes Board direkt seine eigene PIN-geschützte Seite.</div></div>
+      <div class="tabs compact-tabs">${Array.from({length:6},(_,i)=>`<button data-test-board="${i+1}" class="${selectedBoard===i+1?'active':''}">Board ${i+1}</button>`).join('')}</div>
+    </div>${renderBoardControl(selectedBoard,true)}`;
+  }
+
+  function renderPlayerView(){
+    const active=state.participants.filter(p=>p.active&&!p.waitlist);
+    if(!active.length) return '<div class="empty">Keine aktiven Teilnehmer vorhanden.</div>';
+    const p=getPlayer(selectedPlayerId)||active[0]; selectedPlayerId=p.id;
+    const gName=playerGroup(p.id), board=playerBoard(p.id), info=nextPlayerMatchInfo(p.id), opp=opponentFor(info.match,p.id);
+    const prefs=playerPrefs(p.id);
+    const g=gName?state.groups[gName]:null, st=gName?standings(gName):[];
+    const myMatches=g?g.matches.filter(m=>m.playerA===p.id||m.playerB===p.id):[];
+    const completed=myMatches.filter(m=>m.status==='completed');
+    const wins=completed.filter(m=>m.winnerId===p.id).length;
+    const statusClass=info.gamesBefore===0?'now':info.gamesBefore===1?'next':info.gamesBefore===2?'soon':'';
+    return `<div class="player-testbar card card-subtle"><div><strong>Spieleransicht testen</strong><div class="small muted">Im echten Betrieb kommt der Spieler über seinen persönlichen Link/QR direkt hierher.</div></div><select id="playerTestSelect" class="select player-select">${active.map(x=>`<option value="${x.id}" ${x.id===p.id?'selected':''}>${esc(playerName(x))}</option>`).join('')}</select></div>
+    <div class="player-hero ${statusClass}">
+      <div class="player-kicker">Dein Turnier · ${gName?`Gruppe ${gName} · Board ${board}`:'noch nicht ausgelost'}</div>
+      <h3>${esc(playerName(p,true))}</h3>
+      <div class="player-status">${esc(info.status)}</div>
+      ${info.match?`<div class="player-next-match"><span class="small muted">Nächstes Spiel</span><strong>${opp?esc(playerName(opp,true)):'–'}</strong><span>Board ${board} · Gruppe ${gName}</span>${info.match.status==='running'&&info.match.startedAt?`<span class="live-duration" data-started-at="${info.match.startedAt}">${elapsedText(info.match.startedAt)}</span>`:''}</div>`:`<div class="small muted">${gName?'Deine aktuell offenen Gruppenspiele sind abgeschlossen.':'Nach der Auslosung erscheinen hier Gruppe, Board und Gegner.'}</div>`}
+    </div>
+    <div class="grid grid-3 player-metrics">
+      <div class="card metric"><span class="label">Gruppe</span><span class="value">${gName||'–'}</span></div>
+      <div class="card metric"><span class="label">Bilanz</span><span class="value">${wins}:${completed.length-wins}</span><span class="small muted">Siege : Niederlagen</span></div>
+      <div class="card metric"><span class="label">Board</span><span class="value">${board||'–'}</span></div>
+    </div>
+    <div class="player-tabs tabs"><button class="active" data-player-tab="group">Meine Gruppe</button><button data-player-tab="matches">Meine Spiele</button><button data-player-tab="plan">Turnierplan</button><button data-player-tab="alerts">Benachrichtigungen</button></div>
+    <div data-player-panel="group">${g?`<div class="card"><div class="section-head"><h3>Tabelle Gruppe ${gName}</h3><span class="badge">Board ${board}</span></div><div class="table-wrap"><table class="table player-table"><thead><tr><th>#</th><th>Spieler</th><th>Sp.</th><th>Siege</th><th>N.</th></tr></thead><tbody>${st.map((r,i)=>`<tr class="${r.id===p.id?'me':''}"><td>${i+1}</td><td><strong>${esc(playerName(getPlayer(r.id)))}</strong>${r.id===p.id?' <span class="badge badge-success">Du</span>':''}</td><td>${r.played}</td><td>${r.wins}</td><td>${r.losses}</td></tr>`).join('')}</tbody></table></div></div>`:'<div class="empty">Noch keine Gruppe ausgelost.</div>'}</div>
+    <div data-player-panel="matches" hidden>${g?`<div class="card"><h3>Deine Gruppenspiele</h3>${myMatches.map((m,i)=>{const o=opponentFor(m,p.id); const result=m.status==='completed'?(m.winnerId===p.id?'<span class="badge badge-success">Sieg</span>':'<span class="badge badge-danger">Niederlage</span>'):m.status==='running'?'<span class="badge badge-success">läuft</span>':'<span class="badge badge-muted">offen</span>';return `<div class="player-line"><span><span class="muted">${i+1}.</span> gegen <strong>${esc(playerName(o))}</strong></span>${result}</div>`}).join('')}</div>`:'<div class="empty">Noch keine Spiele.</div>'}</div>
+    <div data-player-panel="plan" hidden><div class="card"><h3>Turnierplan</h3><p class="muted small">Hier kann der Spieler den gesamten Turnierverlauf sehen. Der KO-Baum füllt sich nach der Gruppenphase automatisch.</p>${renderCompactKnockout()}</div></div>
+    <div data-player-panel="alerts" hidden><div class="card"><h3>Benachrichtigungen</h3><p class="muted">Diese Einstellungen simulieren bereits die spätere Spieler-App. Echte Push-Mitteilungen benötigen später das Online-Backend.</p>
+      <label class="toggle-line"><input type="checkbox" data-player-pref="two" ${prefs.two?'checked':''}><span><strong>Noch 2 Spiele vor dir</strong><small>Frühe Erinnerung zum Bereitmachen.</small></span></label>
+      <label class="toggle-line"><input type="checkbox" data-player-pref="next" ${prefs.next?'checked':''}><span><strong>Nach diesem Spiel bist du dran</strong><small>Du solltest jetzt zum Board gehen.</small></span></label>
+      <label class="toggle-line"><input type="checkbox" data-player-pref="now" ${prefs.now?'checked':''}><span><strong>Du bist jetzt dran</strong><small>Dein Spiel ist aufgerufen.</small></span></label>
+    </div></div>`;
+  }
+
+  function renderCompactKnockout(){
+    refreshKnockoutSeeds();
+    const r32=state.knockout.r32||[];
+    return `<div class="compact-bracket"><div class="small muted" style="margin-bottom:8px">Letzte 32</div>${r32.map(m=>`<div class="compact-ko"><span>${m.playerA?esc(playerName(getPlayer(m.playerA),true)):esc(m.source?.split(' – ')[0]||'–')}</span><span class="muted">vs.</span><span>${m.playerB?esc(playerName(getPlayer(m.playerB),true)):esc(m.source?.split(' – ')[1]||'–')}</span></div>`).join('')}</div>`;
   }
 
   function renderDashboard(){
@@ -353,7 +478,7 @@
     const cur=boardMatch(board,0), next=boardMatch(board,1);
     return `<div class="board-card ${cur?'running':''}">
       <div class="board-head"><span class="board-title">Board ${board}</span><span class="badge ${cur?.status==='running'?'badge-success':'badge-muted'}">${cur?.status==='running'?'Läuft':cur?'Bereit':'Fertig'}</span></div>
-      ${cur?`<div class="small muted">Gruppe ${cur.group}</div><div class="match-main">${esc(playerName(getPlayer(cur.playerA)))}<br><span class="muted">gegen</span><br>${esc(playerName(getPlayer(cur.playerB)))}</div>`:`<div class="empty">Keine offenen Gruppenspiele</div>`}
+      ${cur?`<div class="small muted">Gruppe ${cur.group}${cur.status==='running'&&cur.startedAt?` · <span class="live-duration" data-started-at="${cur.startedAt}">${elapsedText(cur.startedAt)}</span>`:''}</div><div class="match-main">${esc(playerName(getPlayer(cur.playerA)))}<br><span class="muted">gegen</span><br>${esc(playerName(getPlayer(cur.playerB)))}</div>`:`<div class="empty">Keine offenen Gruppenspiele</div>`}
       <div class="match-next"><strong>Als Nächstes</strong><br>${next?`${esc(playerName(getPlayer(next.playerA)))} – ${esc(playerName(getPlayer(next.playerB)))} · Gruppe ${next.group}`:'–'}</div>
       <div class="actions" style="margin-top:12px"><button class="btn btn-secondary btn-small" data-board-open="${board}">Board öffnen</button></div>
     </div>`;
@@ -416,7 +541,7 @@
     if(!cur) return `<div class="card"><h3>Board ${board}</h3><div class="empty">Alle Gruppenspiele auf diesem Board sind abgeschlossen.</div>${last?`<div class="actions" style="margin-top:12px"><button class="btn btn-warning" data-undo-board="${board}">Letztes Ergebnis korrigieren</button></div>`:''}</div>`;
     const pa=getPlayer(cur.playerA),pb=getPlayer(cur.playerB);
     return `<div class="board-control"><div class="card"><div class="section-head"><div><span class="badge">Board ${board}</span><h3 style="margin-top:8px">Aktuelles Spiel · Gruppe ${cur.group}</h3></div><span class="badge ${cur.status==='running'?'badge-success':'badge-muted'}">${cur.status==='running'?'läuft':'bereit'}</span></div>
-      <div class="score-box"><div class="score-player"><div class="name">${esc(playerName(pa))}</div>${pa.dartName?`<div class="dartname">„${esc(pa.dartName)}“</div>`:''}</div><div class="versus">VS</div><div class="score-player"><div class="name">${esc(playerName(pb))}</div>${pb.dartName?`<div class="dartname">„${esc(pb.dartName)}“</div>`:''}</div></div>
+      <div class="score-box"><div class="score-player"><div class="name">${esc(playerName(pa))}</div>${pa.dartName?`<div class="dartname">„${esc(pa.dartName)}“</div>`:''}</div><div class="versus">VS</div><div class="score-player"><div class="name">${esc(playerName(pb))}</div>${pb.dartName?`<div class="dartname">„${esc(pb.dartName)}“</div>`:''}</div></div>${cur.status==='running'&&cur.startedAt?`<div class="live-strip"><span class="status-dot ok"></span><span class="live-duration" data-started-at="${cur.startedAt}">${elapsedText(cur.startedAt)}</span></div>`:''}
       ${cur.status==='pending'?`<button class="btn btn-success btn-lg" data-start-match="${board}">Spiel starten</button>`:`<div class="big-choice"><button class="btn btn-success" data-win="${pa.id}" data-match="${cur.id}" data-board="${board}">${esc(pa.firstName)} gewinnt</button><button class="btn btn-success" data-win="${pb.id}" data-match="${cur.id}" data-board="${board}">${esc(pb.firstName)} gewinnt</button></div>`}
       ${last?`<div class="actions" style="margin-top:14px"><button class="btn btn-warning btn-small" data-undo-board="${board}">Letztes Ergebnis korrigieren</button></div>`:''}
       </div><div class="card card-subtle"><h3>Als Nächstes</h3>${next?`<div class="match-main">${esc(playerName(getPlayer(next.playerA)))}<br><span class="muted">gegen</span><br>${esc(playerName(getPlayer(next.playerB)))}</div><div class="small muted">Gruppe ${next.group}</div>`:`<div class="empty">Kein weiteres Spiel</div>`}<hr style="border:0;border-top:1px solid var(--border);margin:18px 0"><h3>Board-Reihenfolge</h3><p class="small muted">${BOARD_GROUPS[board].map(g=>`Gruppe ${g}`).join(' → ')} → …</p><p class="small muted">Fortschritt: ${state.boardPointers[board]} / ${(state.boardSchedules[board]||[]).length}</p></div></div>`;
@@ -428,9 +553,9 @@
     return `<div class="notice" style="margin-bottom:14px">Der feste Baum ist hinterlegt. Qualifizierte Spieler werden automatisch eingetragen, sobald ihre Gruppe eindeutig beendet ist.</div><div class="bracket">${rounds.map(([key,label])=>`<div class="round"><h3>${label}</h3>${(state.knockout[key]||[]).map(m=>`<div class="bracket-match"><div class="tiny muted">${m.source||m.id} · BO${m.bestOf}</div><div class="bracket-player ${m.winnerId===m.playerA?'winner':''}">${m.playerA?esc(playerName(getPlayer(m.playerA),true)):'–'}</div><div class="bracket-player ${m.winnerId===m.playerB?'winner':''}">${m.playerB?esc(playerName(getPlayer(m.playerB),true)):'–'}</div></div>`).join('')}</div>`).join('')}</div><div class="card" style="margin-top:16px"><h3>Spiel um Platz 3</h3>${state.knockout.third.map(m=>`<div>${m.playerA?esc(playerName(getPlayer(m.playerA),true)):'–'} gegen ${m.playerB?esc(playerName(getPlayer(m.playerB),true)):'–'} · BO7 · Board 4</div>`).join('')}</div>`;
   }
 
-  function renderBeamer(){
+  function renderBeamer(fullscreen=false){
     const done=allGroupMatches().filter(m=>m.status==='completed').length;
-    return `<div class="beamer"><div class="hero"><div><div class="eyebrow">Live · 3. Alpirsbacher Steeldartscup</div><h3>${state.tournament.phase}</h3></div><div class="right"><strong>${done} / ${allGroupMatches().length||160}</strong><div class="small muted">Gruppenspiele</div></div></div><div class="beamer-board-grid">${Array.from({length:6},(_,i)=>{const b=i+1,c=boardMatch(b,0),n=boardMatch(b,1);return `<div class="beamer-board"><div class="board-number">Board ${b}</div><div class="small muted">${c?`Gruppe ${c.group}`:'Fertig'}</div><div class="current">${c?`${esc(playerName(getPlayer(c.playerA)))}<br><span class="muted">vs.</span><br>${esc(playerName(getPlayer(c.playerB)))}`:'–'}</div><div class="next"><strong>Als Nächstes</strong><br>${n?`${esc(playerName(getPlayer(n.playerA)))} – ${esc(playerName(getPlayer(n.playerB)))}`:'–'}</div></div>`}).join('')}</div></div><p class="small muted" style="margin-top:10px">Im späteren Ausbau rotiert diese Ansicht automatisch zwischen Boards, Tabellen und KO-Baum.</p>`;
+    return `<div class="beamer ${fullscreen?'beamer-full':''}"><div class="hero"><div><div class="eyebrow">Live · 3. Alpirsbacher Steeldartscup</div><h3>${state.tournament.phase}</h3></div><div class="right"><strong>${done} / ${allGroupMatches().length||160}</strong><div class="small muted">Gruppenspiele</div></div></div><div class="beamer-board-grid">${Array.from({length:6},(_,i)=>{const b=i+1,c=boardMatch(b,0),n=boardMatch(b,1);return `<div class="beamer-board"><div class="board-number">Board ${b}</div><div class="small muted">${c?`Gruppe ${c.group}${c.status==='running'&&c.startedAt?` · <span class="live-duration" data-started-at="${c.startedAt}">${elapsedText(c.startedAt)}</span>`:''}`:'Fertig'}</div><div class="current">${c?`${esc(playerName(getPlayer(c.playerA)))}<br><span class="muted">vs.</span><br>${esc(playerName(getPlayer(c.playerB)))}`:'–'}</div><div class="next"><strong>Als Nächstes</strong><br>${n?`${esc(playerName(getPlayer(n.playerA)))} – ${esc(playerName(getPlayer(n.playerB)))}`:'–'}</div></div>`}).join('')}</div></div><p class="small muted" style="margin-top:10px">Später rotiert diese Ansicht automatisch zwischen Boards, Tabellen und KO-Baum.</p>`;
   }
 
   function renderSync(){
@@ -523,5 +648,6 @@
   }
 
   document.getElementById('resetDemoBtn').onclick=()=>{if(confirm('Alle Teständerungen löschen und den Demo-Stand wiederherstellen?'))resetDemo();};
+  setInterval(updateLiveDurations,15000);
   render();
 })();

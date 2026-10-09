@@ -22,10 +22,13 @@ Der Prototyp speichert seinen Zustand im Browser (localStorage). Über **Demo zu
 - feste Board-Zuordnung
 - Veröffentlichung getrennt von Auslosung
 - Turnierstart
-- Board-Ansichten mit aktuellem und nächstem Match
+- getrennte Testansichten für Turnierleitung, Schreiber/Board, Spieler und Beamer
+- Board-Ansichten mit aktuellem und nächstem Match sowie „läuft seit …“ statt fester Match-Uhrzeiten
 - Gruppenergebnisse und Live-Tabellen
 - letzte Ergebnis-Korrektur pro Board
 - fester 32er-KO-Baum und automatische Qualifikanten-Befüllung
+- persönliche Spieleransicht mit Gruppe, Bilanz, nächstem Gegner, Turnierplan und Benachrichtigungsstufen
+- Statuslogik: „Noch 2 Spiele“, „Nach diesem Spiel“, „Du bist jetzt dran“
 - Beamer-Vorschau
 - lokale Persistenz
 
