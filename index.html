@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3. Alpirsbacher Steeldartscup – Turnierleitung</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">🎯</div>
+        <div>
+          <h1>Steeldartscup</h1>
+          <p>Turnierleitung · 16.01.2027</p>
+        </div>
+      </div>
+      <nav id="mainNav" class="nav"></nav>
+      <div class="sidebar-footer">
+        <button id="resetDemoBtn" class="btn btn-ghost btn-small">Demo zurücksetzen</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">3. Alpirsbacher Steeldartscup</div>
+          <h2 id="pageTitle">Dashboard</h2>
+        </div>
+        <div class="top-actions">
+          <span id="publishBadge" class="badge badge-muted">Nicht veröffentlicht</span>
+          <span id="phaseBadge" class="badge">Vorbereitung</span>
+        </div>
+      </header>
+
+      <section id="content"></section>
+    </main>
+  </div>
+
+  <div id="modalRoot"></div>
+  <div id="toastRoot" class="toast-root"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
