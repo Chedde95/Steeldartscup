@@ -4,7 +4,109 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>3. Alpirsbacher Steeldartscup – Turnierleitung</title>
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <style>
+:root {
+  --bg: #0f1115;
+  --panel: #171a21;
+  --panel-2: #1f242d;
+  --panel-3: #262c36;
+  --text: #f5f7fa;
+  --muted: #9da7b3;
+  --border: #313844;
+  --accent: #e33d3d;
+  --accent-2: #ff6a3d;
+  --success: #2dbf76;
+  --warning: #f0ad3d;
+  --danger: #ef5350;
+  --info: #4ea1ff;
+  --shadow: 0 12px 32px rgba(0,0,0,.22);
+  --radius: 16px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app-shell{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;background:#11141a;border-right:1px solid var(--border);padding:20px 16px;display:flex;flex-direction:column;gap:20px}
+.brand{display:flex;gap:12px;align-items:center;padding:8px}
+.brand-mark{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;font-size:22px;box-shadow:var(--shadow)}
+.brand h1{font-size:18px;margin:0 0 2px}.brand p{margin:0;color:var(--muted);font-size:12px}
+.nav{display:flex;flex-direction:column;gap:6px}.nav button{border:0;background:transparent;color:var(--muted);padding:11px 12px;border-radius:11px;text-align:left;display:flex;align-items:center;gap:10px}.nav button:hover{background:var(--panel);color:var(--text)}.nav button.active{background:var(--panel-2);color:var(--text);font-weight:700}
+.sidebar-footer{margin-top:auto}
+.main{padding:28px 30px 48px;min-width:0}.topbar{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:24px}.eyebrow{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.topbar h2{margin:4px 0 0;font-size:30px}.top-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:#263442;color:#dbe9f8;font-size:12px;font-weight:700}.badge-muted{background:var(--panel-2);color:var(--muted)}.badge-success{background:rgba(45,191,118,.14);color:#63e19f}.badge-warning{background:rgba(240,173,61,.14);color:#f5c772}.badge-danger{background:rgba(239,83,80,.14);color:#ff8f8c}
+.grid{display:grid;gap:16px}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}.grid-6{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}.card h3{margin:0 0 12px;font-size:17px}.card h4{margin:0 0 8px}.card-subtle{background:var(--panel-2)}
+.metric{display:flex;flex-direction:column;gap:6px}.metric .value{font-size:28px;font-weight:800}.metric .label{font-size:12px;color:var(--muted)}
+.progress{height:10px;border-radius:999px;background:#0d0f13;overflow:hidden;border:1px solid #242a33}.progress>span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:999px}
+.board-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.board-card{background:linear-gradient(180deg,var(--panel),#141820);border:1px solid var(--border);border-radius:16px;padding:16px}.board-card.running{border-color:#44515f}.board-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.board-title{font-size:18px;font-weight:800}.match-main{font-weight:800;font-size:18px;line-height:1.25;margin:8px 0}.match-next{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);color:var(--muted);font-size:13px}.match-next strong{color:var(--text)}
+.btn{border:1px solid transparent;border-radius:11px;padding:10px 14px;font-weight:750;background:var(--accent);color:white}.btn:hover{filter:brightness(1.05)}.btn-secondary{background:var(--panel-3);border-color:var(--border);color:var(--text)}.btn-ghost{background:transparent;border-color:var(--border);color:var(--muted)}.btn-success{background:var(--success)}.btn-warning{background:var(--warning);color:#1f1607}.btn-danger{background:var(--danger)}.btn-small{padding:7px 10px;font-size:12px}.btn-lg{padding:14px 18px;font-size:16px}.btn:disabled{opacity:.45;cursor:not-allowed}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.section-head{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:14px}.section-head h3{margin:0}.muted{color:var(--muted)}.small{font-size:12px}.tiny{font-size:11px}.right{text-align:right}
+.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:14px}.table{width:100%;border-collapse:collapse;min-width:720px;background:var(--panel)}.table th,.table td{padding:11px 12px;border-bottom:1px solid var(--border);text-align:left;vertical-align:middle}.table th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:#15181e;position:sticky;top:0}.table tr:last-child td{border-bottom:0}.table tr:hover td{background:#1b2028}.table .compact{width:1%;white-space:nowrap}
+.input,.select{width:100%;background:#101318;color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px 11px;outline:none}.input:focus,.select:focus{border-color:#657284}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.form-field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+.notice{border:1px solid var(--border);border-left:4px solid var(--info);background:#161b23;border-radius:12px;padding:12px 14px}.notice.warning{border-left-color:var(--warning)}.notice.danger{border-left-color:var(--danger)}.notice.success{border-left-color:var(--success)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.tabs button{background:var(--panel);border:1px solid var(--border);color:var(--muted);padding:8px 11px;border-radius:10px}.tabs button.active{background:var(--panel-3);color:var(--text)}
+.group-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.group-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px}.group-card h3{display:flex;justify-content:space-between;align-items:center}
+.player-line{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #262d36}.player-line:last-child{border-bottom:0}.player-name{font-weight:700}.dartname{color:#f3b3b3;font-style:italic}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.68);display:grid;place-items:center;padding:20px;z-index:50}.modal{width:min(720px,100%);max-height:90vh;overflow:auto;background:var(--panel);border:1px solid var(--border);border-radius:18px;box-shadow:0 24px 80px rgba(0,0,0,.5);padding:20px}.modal h3{margin-top:0}.modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.toast-root{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:10px;z-index:80}.toast{background:#1d232c;border:1px solid var(--border);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow);min-width:260px}.toast.success{border-left:4px solid var(--success)}.toast.warning{border-left:4px solid var(--warning)}.toast.danger{border-left:4px solid var(--danger)}
+.board-control{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}.score-box{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin:20px 0}.score-player{padding:18px;border-radius:14px;background:var(--panel-2);text-align:center}.score-player .name{font-size:20px;font-weight:800}.score-num{font-size:42px;font-weight:900}.versus{color:var(--muted);font-weight:900}
+.big-choice{display:grid;grid-template-columns:1fr 1fr;gap:12px}.big-choice button{min-height:88px;font-size:18px}
+.bracket{display:grid;grid-template-columns:repeat(5,minmax(210px,1fr));gap:18px;overflow:auto;padding-bottom:10px}.round{display:flex;flex-direction:column;gap:10px}.round h3{font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}.bracket-match{border:1px solid var(--border);background:var(--panel);border-radius:12px;padding:10px}.bracket-player{padding:7px 8px;border-radius:8px;background:#11151b;margin:4px 0}.bracket-player.winner{outline:1px solid var(--success)}
+.beamer{background:#050607;min-height:72vh;border-radius:20px;padding:22px;border:1px solid #222}.beamer .hero{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px}.beamer h3{font-size:28px;margin:0}.beamer-board-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.beamer-board{background:#12161c;border:1px solid #2b313a;border-radius:16px;padding:18px}.beamer-board .board-number{font-size:24px;font-weight:900}.beamer-board .current{font-size:22px;font-weight:800;margin:16px 0}.beamer-board .next{font-size:13px;color:#a8b0bb;border-top:1px solid #2a3038;padding-top:10px}
+.empty{padding:30px;text-align:center;color:var(--muted);border:1px dashed var(--border);border-radius:14px}
+.checkin-toggle{display:flex;gap:6px}.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--muted);margin-right:6px}.status-dot.ok{background:var(--success)}.status-dot.warn{background:var(--warning)}
+@media (max-width:1100px){.app-shell{grid-template-columns:210px 1fr}.board-grid,.grid-6{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}.group-grid{grid-template-columns:1fr}.beamer-board-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:760px){.app-shell{display:block}.sidebar{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border)}.nav{display:grid;grid-template-columns:repeat(2,1fr)}.sidebar-footer{display:none}.main{padding:18px}.topbar{align-items:flex-start;flex-direction:column}.board-grid,.grid-2,.grid-3,.grid-4,.grid-6,.form-grid,.board-control,.big-choice,.beamer-board-grid{grid-template-columns:1fr}.table{min-width:640px}}
+
+/* Testbare Rollenansichten */
+.view-switcher{display:flex;align-items:center;gap:8px;padding:5px 6px 5px 10px;border:1px solid var(--border);border-radius:12px;background:var(--panel)}
+.select-compact{width:auto;min-width:165px;padding:7px 30px 7px 9px}
+.app-shell.special-mode{grid-template-columns:1fr}
+.app-shell.special-mode .sidebar{display:none}
+.app-shell.special-mode .main{max-width:1500px;width:100%;margin:0 auto}
+.special-toolbar,.player-testbar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:16px}
+.special-toolbar .tabs{margin:0}
+.compact-tabs{justify-content:flex-end}
+.live-strip{display:flex;align-items:center;justify-content:center;gap:7px;margin:-5px 0 18px;color:#70dfa4;font-size:13px;font-weight:700}
+.live-duration{white-space:nowrap}
+.player-select{max-width:330px}
+.player-hero{background:linear-gradient(135deg,#181d25,#101318);border:1px solid var(--border);border-radius:22px;padding:26px;margin-bottom:16px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.player-hero:after{content:"";position:absolute;width:230px;height:230px;border-radius:50%;right:-90px;top:-100px;background:rgba(255,255,255,.025)}
+.player-hero.soon{border-color:#60512f}.player-hero.next{border-color:#7b5d25}.player-hero.now{border-color:#257c54;box-shadow:0 0 0 1px rgba(45,191,118,.12),var(--shadow)}
+.player-kicker{text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-size:11px;font-weight:800}
+.player-hero h3{font-size:30px;margin:7px 0 18px}
+.player-status{font-size:28px;font-weight:900;line-height:1.1;margin-bottom:18px;max-width:700px}
+.player-hero.now .player-status{color:#65dda0}.player-hero.next .player-status{color:#f5c772}.player-hero.soon .player-status{color:#dfc681}
+.player-next-match{display:flex;flex-direction:column;gap:4px;padding:15px 16px;background:rgba(0,0,0,.22);border:1px solid var(--border);border-radius:14px;max-width:560px}
+.player-next-match strong{font-size:20px}
+.player-metrics{margin-bottom:16px}
+.player-tabs{margin-top:20px}
+.player-table{min-width:0}
+.player-table tr.me td{background:rgba(45,191,118,.08)}
+.toggle-line{display:flex;gap:13px;align-items:flex-start;padding:15px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.toggle-line:last-child{border-bottom:0}.toggle-line input{margin-top:4px;transform:scale(1.15)}.toggle-line span{display:flex;flex-direction:column;gap:3px}.toggle-line small{color:var(--muted)}
+.compact-bracket{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 14px}.compact-bracket>.small{grid-column:1/-1}
+.compact-ko{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:9px 10px;font-size:12px}.compact-ko span:last-child{text-align:right}
+.beamer-full{min-height:calc(100vh - 150px)}
+
+@media (max-width:760px){
+  .view-switcher{width:100%;justify-content:space-between}.select-compact{flex:1;min-width:0}
+  .app-shell.special-mode .main{padding:14px}.app-shell.special-mode .topbar{gap:12px;margin-bottom:14px}
+  .special-toolbar,.player-testbar{align-items:stretch;flex-direction:column}.player-select{max-width:none}
+  .compact-tabs{display:grid;grid-template-columns:repeat(3,1fr);width:100%}.compact-tabs button{width:100%}
+  .player-hero{padding:20px}.player-hero h3{font-size:24px}.player-status{font-size:24px}.player-next-match strong{font-size:18px}
+  .player-tabs{display:grid;grid-template-columns:repeat(2,1fr)}.player-tabs button{width:100%}
+  .player-table{min-width:520px}.compact-bracket{grid-template-columns:1fr}
+}
+
+/* v3 test-mode controls */
+.mode-quick-buttons{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.mode-quick-buttons button{border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:8px;padding:5px 8px;font:inherit;font-size:11px;cursor:pointer}
+.mode-quick-buttons button:hover,.mode-quick-buttons button.active{background:rgba(255,255,255,.08);color:var(--text);border-color:rgba(255,255,255,.18)}
+@media(max-width:900px){.mode-quick-buttons{display:none}}
+
+</style>
 </head>
 <body>
   <div class="app-shell">
@@ -44,7 +146,7 @@
               <button type="button" data-test-mode="beamer">Beamer</button>
             </div>
           </div>
-          <span class="badge badge-muted" title="Build-Version">v3</span>
+          <span class="badge badge-muted" title="Build-Version">v4-single</span>
           <span id="publishBadge" class="badge badge-muted">Nicht veröffentlicht</span>
           <span id="phaseBadge" class="badge">Vorbereitung</span>
         </div>
@@ -57,6 +159,670 @@
   <div id="modalRoot"></div>
   <div id="toastRoot" class="toast-root"></div>
 
-  <script src="app.js?v=3"></script>
+  <script>
+(() => {
+  const STORAGE_KEY = 'alpirsbacher-steeldartscup-mvp-v1';
+  const GROUPS = 'ABCDEFGHIJKLMNOP'.split('');
+  const BOARD_GROUPS = {
+    1: ['A','B','C'],
+    2: ['D','E','F'],
+    3: ['G','H','I'],
+    4: ['J','K','L'],
+    5: ['M','N'],
+    6: ['O','P']
+  };
+  const FIXED_R32 = [
+    ['A',1,'P',2], ['B',1,'O',2], ['C',1,'N',2], ['D',1,'M',2],
+    ['E',1,'L',2], ['F',1,'K',2], ['G',1,'J',2], ['H',1,'I',2],
+    ['I',1,'H',2], ['J',1,'G',2], ['K',1,'F',2], ['L',1,'E',2],
+    ['M',1,'D',2], ['N',1,'C',2], ['O',1,'B',2], ['P',1,'A',2]
+  ];
+
+  const NAV = [
+    ['dashboard','▦','Dashboard'],
+    ['checkin','✓','Check-in'],
+    ['participants','👥','Teilnehmer'],
+    ['draw','🎲','Auslosung'],
+    ['groups','▤','Gruppen'],
+    ['boards','🎯','Boards'],
+    ['knockout','⌘','KO-Baum'],
+    ['beamer','▣','Beamer'],
+    ['sync','↻','Anmeldung / Sync']
+  ];
+
+  const firstNames = [
+    'Andreas','Benjamin','Christian','Daniel','David','Dennis','Dominik','Florian','Frank','Jan',
+    'Jens','Jonas','Kevin','Lars','Marco','Markus','Martin','Matthias','Michael','Nico',
+    'Patrick','Peter','Philipp','Ralf','Robin','Sascha','Sebastian','Simon','Stefan','Sven',
+    'Thomas','Timo','Tobias','Torsten','Alexander','Felix','Julian','Manuel','Oliver','René',
+    'Fabian','Marcel','Kai','Tim','Max','Lukas','Niklas','Moritz','Johannes','Marius',
+    'Lisa','Sarah','Julia','Anna','Laura','Nadine','Sandra','Melanie','Kathrin','Vanessa',
+    'Marco','Steffen','Bernd','Heiko','Dirk','Volker','Joachim','Holger','Uwe','Jürgen',
+    'Chris','Alex','Micha','Tom','Leon','Fabio','Pascal','Rene','Marvin','Dennis'
+  ];
+  const lastNames = [
+    'Müller','Schmidt','Schneider','Fischer','Weber','Meyer','Wagner','Becker','Schulz','Hoffmann',
+    'Schäfer','Koch','Bauer','Richter','Klein','Wolf','Schröder','Neumann','Schwarz','Zimmermann',
+    'Braun','Krüger','Hofmann','Hartmann','Lange','Schmitt','Werner','Schmitz','Krause','Meier',
+    'Lehmann','Schmid','Schulze','Maier','Köhler','Herrmann','König','Walter','Mayer','Huber',
+    'Kaiser','Fuchs','Peters','Lang','Scholz','Möller','Weiß','Jung','Hahn','Schubert',
+    'Vogel','Friedrich','Keller','Günther','Frank','Berger','Winkler','Roth','Beck','Lorenz',
+    'Baumann','Franke','Albrecht','Schuster','Simon','Ludwig','Böhm','Winter','Kraus','Martin',
+    'Schumacher','Vogt','Stein','Jäger','Otto','Sommer','Groß','Seidel','Heinrich','Brandt'
+  ];
+  const dartNames = ['The Hammer','Iceman','Black Arrow','The Fox','Bulleye','The Machine','Lucky Dart','Red Dragon','The Chief','One Dart'];
+
+  let state = loadState();
+  let currentView = 'dashboard';
+  let currentGroup = 'A';
+  let selectedBoard = 1;
+  let displayMode = 'admin';
+  let selectedPlayerId = null;
+
+  function seedParticipants() {
+    return Array.from({length:80}, (_,i) => ({
+      id: `P${String(i+1).padStart(3,'0')}`,
+      firstName: firstNames[i],
+      lastName: lastNames[i],
+      dartName: i % 9 === 0 ? dartNames[(i/9) % dartNames.length | 0] : '',
+      email: `${slug(firstNames[i])}.${slug(lastNames[i])}@beispiel.de`,
+      phone: i % 4 === 0 ? '' : `0176 ${String(10000000+i*137).slice(0,8)}`,
+      registrationStatus: 'bestätigt',
+      checkinStatus: 'angemeldet',
+      waitlist: false,
+      active: true,
+      source: 'Anmeldung'
+    }));
+  }
+
+  function initialState() {
+    return {
+      version: 1,
+      tournament: {
+        name: '3. Alpirsbacher Steeldartscup',
+        date: '16.01.2027',
+        drawLocked: false,
+        published: false,
+        publishedAt: null,
+        started: false,
+        finished: false,
+        phase: 'Vorbereitung'
+      },
+      participants: seedParticipants(),
+      groups: {},
+      boardSchedules: {},
+      boardPointers: {1:0,2:0,3:0,4:0,5:0,6:0},
+      lastCompletedByBoard: {1:null,2:null,3:null,4:null,5:null,6:null},
+      manualGroupOrder: {},
+      knockout: { r32: [], r16: [], qf: [], sf: [], third: [], final: [] },
+      playerPrefs: {},
+      audit: []
+    };
+  }
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : initialState();
+    } catch (_) {
+      return initialState();
+    }
+  }
+  function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); updateBadges(); }
+  function resetDemo() { state = initialState(); saveState(); render(); toast('Demo wurde zurückgesetzt.','success'); }
+
+  function slug(s){ return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,''); }
+  function esc(s=''){ return String(s).replace(/[&<>'"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m])); }
+  function playerName(p, fullDart=false){
+    if (!p) return '–';
+    return fullDart && p.dartName ? `${p.firstName} „${p.dartName}“ ${p.lastName}` : `${p.firstName} ${p.lastName}`;
+  }
+  function getPlayer(id){ return state.participants.find(p=>p.id===id); }
+  function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+  function audit(text){ state.audit.unshift({at:new Date().toISOString(), text}); state.audit = state.audit.slice(0,100); }
+  function toast(text,type='success'){ const root=document.getElementById('toastRoot'); const el=document.createElement('div'); el.className=`toast ${type}`; el.textContent=text; root.appendChild(el); setTimeout(()=>el.remove(),3000); }
+  function pct(n,d){ return d ? Math.round(n/d*100) : 0; }
+  function elapsedText(iso){
+    if(!iso) return '';
+    const ms=Math.max(0, Date.now()-new Date(iso).getTime());
+    const min=Math.floor(ms/60000);
+    if(min<1) return 'läuft seit < 1 Min.';
+    if(min<60) return `läuft seit ${min} Min.`;
+    const h=Math.floor(min/60), rest=min%60;
+    return `läuft seit ${h} Std.${rest?` ${rest} Min.`:''}`;
+  }
+  function playerGroup(id){ return GROUPS.find(g=>state.groups[g]?.playerIds.includes(id)) || null; }
+  function playerBoard(id){ const g=playerGroup(id); return g ? state.groups[g]?.board : null; }
+  function nextPlayerMatchInfo(id){
+    const board=playerBoard(id);
+    if(!board) return {board:null, match:null, gamesBefore:null, status:'Noch nicht ausgelost'};
+    const schedule=state.boardSchedules[board]||[];
+    const pointer=state.boardPointers[board]||0;
+    let gamesBefore=0;
+    for(let i=pointer;i<schedule.length;i++){
+      const m=findMatch(schedule[i]);
+      if(!m || m.status==='completed') continue;
+      if(m.playerA===id || m.playerB===id){
+        let status='';
+        if(gamesBefore===0) status=m.status==='running'?'Du bist jetzt dran':'Du bist jetzt dran';
+        else if(gamesBefore===1) status='Nach diesem Spiel bist du dran';
+        else if(gamesBefore===2) status='Noch 2 Spiele vor dir';
+        else status=`Noch ${gamesBefore} Spiele vor dir`;
+        return {board,match:m,gamesBefore,status};
+      }
+      gamesBefore++;
+    }
+    return {board,match:null,gamesBefore:null,status:groupComplete(playerGroup(id))?'Gruppenphase für dich beendet':'Kein weiteres Gruppenspiel offen'};
+  }
+  function opponentFor(match,id){ if(!match) return null; return getPlayer(match.playerA===id?match.playerB:match.playerA); }
+  function playerPrefs(id){
+    state.playerPrefs ||= {};
+    return state.playerPrefs[id] ||= {two:true,next:true,now:true};
+  }
+
+  function roundRobinMatches(ids, group) {
+    const players = [...ids];
+    if (players.length % 2) players.push(null);
+    const rounds = [];
+    const n = players.length;
+    const arr = [...players];
+    for (let r=0;r<n-1;r++) {
+      const round=[];
+      for (let i=0;i<n/2;i++) {
+        const a=arr[i], b=arr[n-1-i];
+        if (a && b) round.push([a,b]);
+      }
+      rounds.push(round);
+      arr.splice(1,0,arr.pop());
+    }
+    const flattened=[];
+    let count=1;
+    for (const round of rounds) {
+      for (const [a,b] of round) {
+        flattened.push({
+          id:`G-${group}-${count++}`,
+          type:'group', group, playerA:a, playerB:b,
+          winnerId:null, status:'pending', startedAt:null, completedAt:null
+        });
+      }
+    }
+    return flattened;
+  }
+
+  function performDraw() {
+    const active = state.participants.filter(p=>p.active && p.registrationStatus==='bestätigt' && !p.waitlist);
+    if (active.length < 80) return toast(`Es sind nur ${active.length} aktive bestätigte Teilnehmer vorhanden.`, 'danger');
+    const selected = shuffle(active).slice(0,80);
+    const groups = {};
+    GROUPS.forEach((g,gi)=>{
+      const ids=selected.slice(gi*5,gi*5+5).map(p=>p.id);
+      groups[g]={name:g, board: Number(Object.keys(BOARD_GROUPS).find(b=>BOARD_GROUPS[b].includes(g))), playerIds:ids, matches:roundRobinMatches(ids,g)};
+    });
+    state.groups=groups;
+    state.boardSchedules={};
+    for(const [board,groupNames] of Object.entries(BOARD_GROUPS)) {
+      const schedule=[];
+      for(let i=0;i<10;i++) {
+        for(const g of groupNames) schedule.push(groups[g].matches[i].id);
+      }
+      state.boardSchedules[board]=schedule;
+      state.boardPointers[board]=0;
+      state.lastCompletedByBoard[board]=null;
+    }
+    state.manualGroupOrder={};
+    state.knockout={r32:[],r16:[],qf:[],sf:[],third:[],final:[]};
+    state.tournament.drawLocked=true;
+    state.tournament.published=false;
+    state.tournament.started=false;
+    state.tournament.phase='Ausgelost';
+    audit('Gruppenauslosung durchgeführt.');
+    saveState(); render(); toast('80 Teilnehmer wurden zufällig ausgelost.');
+  }
+
+  function allGroupMatches(){ return GROUPS.flatMap(g=>state.groups[g]?.matches||[]); }
+  function findMatch(id){
+    for(const g of GROUPS){ const m=state.groups[g]?.matches.find(x=>x.id===id); if(m) return m; }
+    for(const round of Object.values(state.knockout)){ const m=(round||[]).find(x=>x.id===id); if(m) return m; }
+    return null;
+  }
+  function boardMatch(board, offset=0){
+    const schedule=state.boardSchedules[board]||[];
+    let idx=(state.boardPointers[board]||0)+offset;
+    while(idx<schedule.length){ const m=findMatch(schedule[idx]); if(m && m.status!=='completed') return m; idx++; }
+    return null;
+  }
+  function normalizeBoardPointer(board){
+    const schedule=state.boardSchedules[board]||[];
+    let i=state.boardPointers[board]||0;
+    while(i<schedule.length){ const m=findMatch(schedule[i]); if(m && m.status!=='completed') break; i++; }
+    state.boardPointers[board]=i;
+  }
+  function startCurrentMatch(board){
+    normalizeBoardPointer(board);
+    const m=boardMatch(board,0); if(!m) return;
+    if(m.status==='pending'){m.status='running';m.startedAt=new Date().toISOString(); audit(`${m.id} auf Board ${board} gestartet.`); saveState(); render();}
+  }
+  function completeGroupMatch(board, matchId, winnerId){
+    const m=findMatch(matchId); if(!m || m.type!=='group') return;
+    m.winnerId=winnerId; m.status='completed'; m.completedAt=new Date().toISOString();
+    state.lastCompletedByBoard[board]=m.id;
+    normalizeBoardPointer(board);
+    audit(`${m.id} beendet: ${playerName(getPlayer(winnerId))} gewinnt.`);
+    refreshKnockoutSeeds();
+    saveState(); render(); toast('Ergebnis gespeichert.');
+  }
+  function undoLastBoardResult(board){
+    const id=state.lastCompletedByBoard[board]; if(!id) return;
+    const m=findMatch(id); if(!m) return;
+    m.winnerId=null; m.status='pending'; m.completedAt=null; m.startedAt=null;
+    const idx=(state.boardSchedules[board]||[]).indexOf(id); if(idx>=0) state.boardPointers[board]=Math.min(state.boardPointers[board],idx);
+    state.lastCompletedByBoard[board]=null;
+    audit(`${id} wurde vom Schreiber zurückgesetzt.`);
+    refreshKnockoutSeeds(); saveState(); render(); toast('Letztes Ergebnis wurde zurückgesetzt.','warning');
+  }
+
+  function standings(groupName){
+    const g=state.groups[groupName]; if(!g) return [];
+    const rows=g.playerIds.map(id=>({id,wins:0,losses:0,played:0}));
+    const map=Object.fromEntries(rows.map(r=>[r.id,r]));
+    const completed=g.matches.filter(m=>m.status==='completed');
+    for(const m of completed){
+      map[m.playerA].played++; map[m.playerB].played++;
+      if(m.winnerId===m.playerA){map[m.playerA].wins++;map[m.playerB].losses++;} else {map[m.playerB].wins++;map[m.playerA].losses++;}
+    }
+    const manual=state.manualGroupOrder[groupName];
+    if(manual?.length===5){
+      const rank=Object.fromEntries(manual.map((id,i)=>[id,i]));
+      return rows.sort((a,b)=>rank[a.id]-rank[b.id]);
+    }
+    rows.sort((a,b)=>b.wins-a.wins || a.losses-b.losses || playerName(getPlayer(a.id)).localeCompare(playerName(getPlayer(b.id))));
+    // Direct comparison only when exactly two players share the same win total.
+    const byWins={}; rows.forEach(r=>(byWins[r.wins]??=[]).push(r));
+    for(const tied of Object.values(byWins)){
+      if(tied.length===2){
+        const [a,b]=tied;
+        const direct=completed.find(m=>[m.playerA,m.playerB].includes(a.id)&&[m.playerA,m.playerB].includes(b.id));
+        if(direct){
+          const ia=rows.indexOf(a), ib=rows.indexOf(b);
+          if(direct.winnerId===b.id && ia<ib){ rows.splice(ia,1); rows.splice(ib,0,a); }
+          if(direct.winnerId===a.id && ib<ia){ rows.splice(ib,1); rows.splice(ia,0,b); }
+        }
+      }
+    }
+    return rows;
+  }
+  function groupTieWarning(groupName){
+    const g=state.groups[groupName]; if(!g || state.manualGroupOrder[groupName]) return false;
+    const st=standings(groupName); const completed=g.matches.filter(m=>m.status==='completed').length;
+    if(completed<10) return false;
+    const byWins={}; st.forEach(r=>(byWins[r.wins]??=[]).push(r.id));
+    return Object.values(byWins).some(ids=>ids.length>=3);
+  }
+  function groupComplete(groupName){ return (state.groups[groupName]?.matches||[]).every(m=>m.status==='completed'); }
+  function qualifier(groupName, place){
+    if(!groupComplete(groupName) || groupTieWarning(groupName)) return null;
+    return standings(groupName)[place-1]?.id || null;
+  }
+
+  function refreshKnockoutSeeds(){
+    if(!Object.keys(state.groups).length) return;
+    const existing = Object.fromEntries((state.knockout.r32||[]).map(m=>[m.id,m]));
+    state.knockout.r32 = FIXED_R32.map((x,i)=>{
+      const [g1,p1,g2,p2]=x; const old=existing[`K-R32-${i+1}`];
+      return {
+        id:`K-R32-${i+1}`, type:'ko', round:'Letzte 32', bestOf:3,
+        playerA: qualifier(g1,p1), playerB: qualifier(g2,p2),
+        scoreA:old?.scoreA||0, scoreB:old?.scoreB||0, winnerId:old?.winnerId||null,
+        status:old?.status||'pending', source:`${g1}${p1} – ${g2}${p2}`
+      };
+    });
+    buildLaterRounds();
+  }
+  function buildLaterRounds(){
+    const specs=[
+      ['r16','Achtelfinale',8,3,'r32'],
+      ['qf','Viertelfinale',4,5,'r16'],
+      ['sf','Halbfinale',2,7,'qf'],
+      ['final','Finale',1,9,'sf']
+    ];
+    for(const [key,label,count,bestOf,prev] of specs){
+      const existing=Object.fromEntries((state.knockout[key]||[]).map(m=>[m.id,m]));
+      state.knockout[key]=Array.from({length:count},(_,i)=>{
+        const old=existing[`K-${key.toUpperCase()}-${i+1}`];
+        const a=state.knockout[prev][i*2]?.winnerId||null;
+        const b=state.knockout[prev][i*2+1]?.winnerId||null;
+        return {id:`K-${key.toUpperCase()}-${i+1}`,type:'ko',round:label,bestOf,playerA:a,playerB:b,scoreA:old?.scoreA||0,scoreB:old?.scoreB||0,winnerId:old?.winnerId||null,status:old?.status||'pending'};
+      });
+    }
+    const sf=state.knockout.sf;
+    const losers=sf.map(m=>m.winnerId ? (m.winnerId===m.playerA?m.playerB:m.playerA) : null);
+    const oldThird=state.knockout.third?.[0];
+    state.knockout.third=[{id:'K-THIRD-1',type:'ko',round:'Spiel um Platz 3',bestOf:7,playerA:losers[0]||null,playerB:losers[1]||null,scoreA:oldThird?.scoreA||0,scoreB:oldThird?.scoreB||0,winnerId:oldThird?.winnerId||null,status:oldThird?.status||'pending'}];
+  }
+
+  function publishTournament(){
+    if(!Object.keys(state.groups).length) return toast('Bitte zuerst auslosen.','warning');
+    state.tournament.published=true; state.tournament.publishedAt=new Date().toISOString();
+    audit('Turnierplan veröffentlicht.'); saveState(); render(); toast('Turnierplan veröffentlicht.');
+  }
+  function startTournament(){
+    if(!state.tournament.published) return toast('Der Turnierplan muss zuerst veröffentlicht werden.','warning');
+    state.tournament.started=true; state.tournament.phase='Gruppenphase';
+    for(let b=1;b<=6;b++) startCurrentMatch(b);
+    audit('Turnier gestartet.'); saveState(); render(); toast('Turnier ist gestartet.');
+  }
+
+  function renderNav(){
+    document.getElementById('mainNav').innerHTML=NAV.map(([id,icon,label])=>`<button data-view="${id}" class="${id===currentView?'active':''}"><span>${icon}</span>${label}</button>`).join('');
+    document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{currentView=b.dataset.view;render();});
+  }
+  function updateBadges(){
+    const pb=document.getElementById('publishBadge'); const ph=document.getElementById('phaseBadge'); if(!pb||!ph) return;
+    pb.textContent=state.tournament.published?'Veröffentlicht':'Nicht veröffentlicht'; pb.className=`badge ${state.tournament.published?'badge-success':'badge-muted'}`;
+    ph.textContent=state.tournament.phase; ph.className='badge';
+  }
+  function render(){
+    const shell=document.querySelector('.app-shell');
+    shell?.classList.toggle('special-mode',displayMode!=='admin');
+    renderNav(); updateBadges();
+    const select=document.getElementById('testViewSelect');
+    if(select) select.value=displayMode;
+    document.querySelectorAll('[data-test-mode]').forEach(btn=>btn.classList.toggle('active',btn.dataset.testMode===displayMode));
+    const content=document.getElementById('content');
+    if(displayMode==='writer'){
+      document.getElementById('pageTitle').textContent=`Schreiberansicht · Board ${selectedBoard}`;
+      content.innerHTML=renderWriterView();
+    } else if(displayMode==='player'){
+      if(!selectedPlayerId) selectedPlayerId=state.participants.find(p=>p.active&&!p.waitlist)?.id || state.participants[0]?.id;
+      document.getElementById('pageTitle').textContent='Spieleransicht';
+      content.innerHTML=renderPlayerView();
+    } else if(displayMode==='beamer'){
+      document.getElementById('pageTitle').textContent='Beameransicht';
+      content.innerHTML=renderBeamer(true);
+    } else {
+      const meta=NAV.find(x=>x[0]===currentView); document.getElementById('pageTitle').textContent=meta?meta[2]:'Dashboard';
+      const views={dashboard:renderDashboard,checkin:renderCheckin,participants:renderParticipants,draw:renderDraw,groups:renderGroups,boards:renderBoards,knockout:renderKnockout,beamer:renderBeamer,sync:renderSync};
+      content.innerHTML=(views[currentView]||renderDashboard)();
+    }
+    bindViewHandlers();
+    bindModeHandlers();
+    updateLiveDurations();
+  }
+
+  function setDisplayMode(mode){
+    if(!['admin','writer','player','beamer'].includes(mode)) return;
+    displayMode=mode;
+    render();
+  }
+
+  function bindModeHandlers(){
+    const select=document.getElementById('testViewSelect');
+    if(select) select.onchange=(e)=>setDisplayMode(e.target.value);
+    document.querySelectorAll('[data-test-mode]').forEach(btn=>btn.onclick=()=>setDisplayMode(btn.dataset.testMode));
+    document.querySelectorAll('[data-test-board]').forEach(b=>b.onclick=()=>{selectedBoard=Number(b.dataset.testBoard);render();});
+    document.getElementById('playerTestSelect')?.addEventListener('change',e=>{selectedPlayerId=e.target.value;render();});
+    document.querySelectorAll('[data-player-pref]').forEach(el=>el.onchange=()=>{
+      const pref=playerPrefs(selectedPlayerId); pref[el.dataset.playerPref]=el.checked; saveState();
+    });
+    document.querySelectorAll('[data-player-tab]').forEach(b=>b.onclick=()=>{
+      document.querySelectorAll('[data-player-tab]').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      document.querySelectorAll('[data-player-panel]').forEach(x=>x.hidden=x.dataset.playerPanel!==b.dataset.playerTab);
+    });
+  }
+
+  function updateLiveDurations(){
+    document.querySelectorAll('[data-started-at]').forEach(el=>el.textContent=elapsedText(el.dataset.startedAt));
+  }
+
+  function renderWriterView(){
+    if(!Object.keys(state.groups).length) return `<div class="empty">Noch keine Auslosung vorhanden. In der echten Version öffnet der Schreiber sein Board über QR-Code/PIN.</div>`;
+    return `<div class="special-toolbar">
+      <div><strong>Schreiber-Test</strong><div class="small muted">Später öffnet jedes Board direkt seine eigene PIN-geschützte Seite.</div></div>
+      <div class="tabs compact-tabs">${Array.from({length:6},(_,i)=>`<button data-test-board="${i+1}" class="${selectedBoard===i+1?'active':''}">Board ${i+1}</button>`).join('')}</div>
+    </div>${renderBoardControl(selectedBoard,true)}`;
+  }
+
+  function renderPlayerView(){
+    const active=state.participants.filter(p=>p.active&&!p.waitlist);
+    if(!active.length) return '<div class="empty">Keine aktiven Teilnehmer vorhanden.</div>';
+    const p=getPlayer(selectedPlayerId)||active[0]; selectedPlayerId=p.id;
+    const gName=playerGroup(p.id), board=playerBoard(p.id), info=nextPlayerMatchInfo(p.id), opp=opponentFor(info.match,p.id);
+    const prefs=playerPrefs(p.id);
+    const g=gName?state.groups[gName]:null, st=gName?standings(gName):[];
+    const myMatches=g?g.matches.filter(m=>m.playerA===p.id||m.playerB===p.id):[];
+    const completed=myMatches.filter(m=>m.status==='completed');
+    const wins=completed.filter(m=>m.winnerId===p.id).length;
+    const statusClass=info.gamesBefore===0?'now':info.gamesBefore===1?'next':info.gamesBefore===2?'soon':'';
+    return `<div class="player-testbar card card-subtle"><div><strong>Spieleransicht testen</strong><div class="small muted">Im echten Betrieb kommt der Spieler über seinen persönlichen Link/QR direkt hierher.</div></div><select id="playerTestSelect" class="select player-select">${active.map(x=>`<option value="${x.id}" ${x.id===p.id?'selected':''}>${esc(playerName(x))}</option>`).join('')}</select></div>
+    <div class="player-hero ${statusClass}">
+      <div class="player-kicker">Dein Turnier · ${gName?`Gruppe ${gName} · Board ${board}`:'noch nicht ausgelost'}</div>
+      <h3>${esc(playerName(p,true))}</h3>
+      <div class="player-status">${esc(info.status)}</div>
+      ${info.match?`<div class="player-next-match"><span class="small muted">Nächstes Spiel</span><strong>${opp?esc(playerName(opp,true)):'–'}</strong><span>Board ${board} · Gruppe ${gName}</span>${info.match.status==='running'&&info.match.startedAt?`<span class="live-duration" data-started-at="${info.match.startedAt}">${elapsedText(info.match.startedAt)}</span>`:''}</div>`:`<div class="small muted">${gName?'Deine aktuell offenen Gruppenspiele sind abgeschlossen.':'Nach der Auslosung erscheinen hier Gruppe, Board und Gegner.'}</div>`}
+    </div>
+    <div class="grid grid-3 player-metrics">
+      <div class="card metric"><span class="label">Gruppe</span><span class="value">${gName||'–'}</span></div>
+      <div class="card metric"><span class="label">Bilanz</span><span class="value">${wins}:${completed.length-wins}</span><span class="small muted">Siege : Niederlagen</span></div>
+      <div class="card metric"><span class="label">Board</span><span class="value">${board||'–'}</span></div>
+    </div>
+    <div class="player-tabs tabs"><button class="active" data-player-tab="group">Meine Gruppe</button><button data-player-tab="matches">Meine Spiele</button><button data-player-tab="plan">Turnierplan</button><button data-player-tab="alerts">Benachrichtigungen</button></div>
+    <div data-player-panel="group">${g?`<div class="card"><div class="section-head"><h3>Tabelle Gruppe ${gName}</h3><span class="badge">Board ${board}</span></div><div class="table-wrap"><table class="table player-table"><thead><tr><th>#</th><th>Spieler</th><th>Sp.</th><th>Siege</th><th>N.</th></tr></thead><tbody>${st.map((r,i)=>`<tr class="${r.id===p.id?'me':''}"><td>${i+1}</td><td><strong>${esc(playerName(getPlayer(r.id)))}</strong>${r.id===p.id?' <span class="badge badge-success">Du</span>':''}</td><td>${r.played}</td><td>${r.wins}</td><td>${r.losses}</td></tr>`).join('')}</tbody></table></div></div>`:'<div class="empty">Noch keine Gruppe ausgelost.</div>'}</div>
+    <div data-player-panel="matches" hidden>${g?`<div class="card"><h3>Deine Gruppenspiele</h3>${myMatches.map((m,i)=>{const o=opponentFor(m,p.id); const result=m.status==='completed'?(m.winnerId===p.id?'<span class="badge badge-success">Sieg</span>':'<span class="badge badge-danger">Niederlage</span>'):m.status==='running'?'<span class="badge badge-success">läuft</span>':'<span class="badge badge-muted">offen</span>';return `<div class="player-line"><span><span class="muted">${i+1}.</span> gegen <strong>${esc(playerName(o))}</strong></span>${result}</div>`}).join('')}</div>`:'<div class="empty">Noch keine Spiele.</div>'}</div>
+    <div data-player-panel="plan" hidden><div class="card"><h3>Turnierplan</h3><p class="muted small">Hier kann der Spieler den gesamten Turnierverlauf sehen. Der KO-Baum füllt sich nach der Gruppenphase automatisch.</p>${renderCompactKnockout()}</div></div>
+    <div data-player-panel="alerts" hidden><div class="card"><h3>Benachrichtigungen</h3><p class="muted">Diese Einstellungen simulieren bereits die spätere Spieler-App. Echte Push-Mitteilungen benötigen später das Online-Backend.</p>
+      <label class="toggle-line"><input type="checkbox" data-player-pref="two" ${prefs.two?'checked':''}><span><strong>Noch 2 Spiele vor dir</strong><small>Frühe Erinnerung zum Bereitmachen.</small></span></label>
+      <label class="toggle-line"><input type="checkbox" data-player-pref="next" ${prefs.next?'checked':''}><span><strong>Nach diesem Spiel bist du dran</strong><small>Du solltest jetzt zum Board gehen.</small></span></label>
+      <label class="toggle-line"><input type="checkbox" data-player-pref="now" ${prefs.now?'checked':''}><span><strong>Du bist jetzt dran</strong><small>Dein Spiel ist aufgerufen.</small></span></label>
+    </div></div>`;
+  }
+
+  function renderCompactKnockout(){
+    refreshKnockoutSeeds();
+    const r32=state.knockout.r32||[];
+    return `<div class="compact-bracket"><div class="small muted" style="margin-bottom:8px">Letzte 32</div>${r32.map(m=>`<div class="compact-ko"><span>${m.playerA?esc(playerName(getPlayer(m.playerA),true)):esc(m.source?.split(' – ')[0]||'–')}</span><span class="muted">vs.</span><span>${m.playerB?esc(playerName(getPlayer(m.playerB),true)):esc(m.source?.split(' – ')[1]||'–')}</span></div>`).join('')}</div>`;
+  }
+
+  function renderDashboard(){
+    const matches=allGroupMatches(); const done=matches.filter(m=>m.status==='completed').length;
+    const checked=state.participants.filter(p=>p.active&&p.checkinStatus==='eingecheckt').length;
+    const groupsDone=GROUPS.filter(groupComplete).length;
+    const warnings=GROUPS.filter(groupTieWarning).map(g=>`Gruppe ${g}: Stechen / manuelle Reihenfolge erforderlich`);
+    const boards=Array.from({length:6},(_,i)=>renderBoardCard(i+1)).join('');
+    return `
+      <div class="grid grid-4">
+        <div class="card metric"><span class="label">Gruppenspiele</span><span class="value">${done} / ${matches.length||160}</span><div class="progress"><span style="width:${pct(done,matches.length||160)}%"></span></div></div>
+        <div class="card metric"><span class="label">Check-in</span><span class="value">${checked} / 80</span><span class="small muted">${80-checked} noch offen</span></div>
+        <div class="card metric"><span class="label">Gruppen fertig</span><span class="value">${groupsDone} / 16</span><span class="small muted">${GROUPS.filter(g=>qualifier(g,1)&&qualifier(g,2)).length*2} KO-Spieler fest</span></div>
+        <div class="card metric"><span class="label">Turnierstatus</span><span class="value" style="font-size:21px">${state.tournament.phase}</span><span class="small muted">${state.tournament.published?'Plan veröffentlicht':'Plan intern'}</span></div>
+      </div>
+      <div class="section-head" style="margin-top:22px"><h3>Boards</h3><div class="actions">${!state.tournament.started?`<button class="btn btn-success" id="startTournamentBtn" ${!state.tournament.published?'disabled':''}>Turnier starten</button>`:''}</div></div>
+      <div class="board-grid">${boards}</div>
+      <div class="grid grid-2" style="margin-top:18px">
+        <div class="card"><h3>Hinweise</h3>${warnings.length?warnings.map(w=>`<div class="notice warning" style="margin-bottom:8px">⚠ ${w}</div>`).join(''):`<div class="notice success">Aktuell keine kritischen Hinweise.</div>`}</div>
+        <div class="card"><h3>Kurzaktionen</h3><div class="actions"><button class="btn btn-secondary" data-goto="checkin">Check-in öffnen</button><button class="btn btn-secondary" data-goto="draw">Auslosung</button><button class="btn btn-secondary" data-goto="beamer">Beamer öffnen</button></div><p class="muted small" style="margin-bottom:0">Die zwei Turnierleiter können dieselbe Verwaltungsansicht benutzen. Eine echte Mehrbenutzer-Synchronisierung kommt mit dem Server-Backend.</p></div>
+      </div>`;
+  }
+
+  function renderBoardCard(board){
+    const cur=boardMatch(board,0), next=boardMatch(board,1);
+    return `<div class="board-card ${cur?'running':''}">
+      <div class="board-head"><span class="board-title">Board ${board}</span><span class="badge ${cur?.status==='running'?'badge-success':'badge-muted'}">${cur?.status==='running'?'Läuft':cur?'Bereit':'Fertig'}</span></div>
+      ${cur?`<div class="small muted">Gruppe ${cur.group}${cur.status==='running'&&cur.startedAt?` · <span class="live-duration" data-started-at="${cur.startedAt}">${elapsedText(cur.startedAt)}</span>`:''}</div><div class="match-main">${esc(playerName(getPlayer(cur.playerA)))}<br><span class="muted">gegen</span><br>${esc(playerName(getPlayer(cur.playerB)))}</div>`:`<div class="empty">Keine offenen Gruppenspiele</div>`}
+      <div class="match-next"><strong>Als Nächstes</strong><br>${next?`${esc(playerName(getPlayer(next.playerA)))} – ${esc(playerName(getPlayer(next.playerB)))} · Gruppe ${next.group}`:'–'}</div>
+      <div class="actions" style="margin-top:12px"><button class="btn btn-secondary btn-small" data-board-open="${board}">Board öffnen</button></div>
+    </div>`;
+  }
+
+  function renderCheckin(){
+    const ps=state.participants.filter(p=>p.active&&!p.waitlist);
+    const checked=ps.filter(p=>p.checkinStatus==='eingecheckt').length;
+    return `<div class="section-head"><div><h3>Teilnehmer-Check-in</h3><p class="muted small">Nur die Turnierleitung checkt Teilnehmer ein.</p></div><div class="actions"><button id="checkAllBtn" class="btn btn-secondary">Alle einchecken (Test)</button></div></div>
+      <div class="card" style="margin-bottom:14px"><div class="grid grid-3"><div class="metric"><span class="label">Eingecheckt</span><span class="value">${checked}</span></div><div class="metric"><span class="label">Offen</span><span class="value">${ps.length-checked}</span></div><div><input id="checkinSearch" class="input" placeholder="Name suchen …"></div></div></div>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Name</th><th>Dartname</th><th>Status</th><th>Gruppe</th><th class="compact">Aktion</th></tr></thead><tbody id="checkinRows">${ps.map(checkinRow).join('')}</tbody></table></div>`;
+  }
+  function checkinRow(p){
+    const g=GROUPS.find(x=>state.groups[x]?.playerIds.includes(p.id))||'–';
+    const checked=p.checkinStatus==='eingecheckt';
+    return `<tr data-search="${esc((playerName(p)+' '+p.dartName).toLowerCase())}"><td><strong>${esc(playerName(p))}</strong></td><td>${p.dartName?`„${esc(p.dartName)}“`:'–'}</td><td><span class="status-dot ${checked?'ok':'warn'}"></span>${checked?'eingecheckt':'angemeldet'}</td><td>${g}</td><td class="compact"><button class="btn ${checked?'btn-secondary':'btn-success'} btn-small" data-checkin="${p.id}">${checked?'Zurücksetzen':'Einchecken'}</button></td></tr>`;
+  }
+
+  function renderParticipants(){
+    const ps=state.participants;
+    return `<div class="section-head"><div><h3>Teilnehmerverwaltung</h3><p class="muted small">Daten dürfen von der Turnierleitung auch nach der Übernahme korrigiert werden.</p></div><button class="btn" id="addParticipantBtn">Teilnehmer hinzufügen</button></div>
+      <div class="card" style="margin-bottom:14px"><input id="participantSearch" class="input" placeholder="Teilnehmer suchen …"></div>
+      <div class="table-wrap"><table class="table"><thead><tr><th>ID</th><th>Name</th><th>Dartname</th><th>E-Mail</th><th>Telefon</th><th>Status</th><th class="compact">Aktion</th></tr></thead><tbody id="participantRows">${ps.map(p=>`<tr data-search="${esc((playerName(p)+' '+p.email+' '+p.dartName).toLowerCase())}"><td>${p.id}</td><td><strong>${esc(playerName(p))}</strong></td><td>${p.dartName?esc(p.dartName):'–'}</td><td>${esc(p.email)}</td><td>${esc(p.phone||'–')}</td><td>${p.waitlist?'<span class="badge badge-warning">Nachrücker</span>':p.active?'<span class="badge badge-success">aktiv</span>':'<span class="badge badge-muted">inaktiv</span>'}</td><td><button class="btn btn-secondary btn-small" data-edit-player="${p.id}">Bearbeiten</button></td></tr>`).join('')}</tbody></table></div>`;
+  }
+
+  function renderDraw(){
+    const drawn=Object.keys(state.groups).length>0;
+    return `<div class="grid grid-2">
+      <div class="card"><h3>Gruppenauslosung</h3><p class="muted">80 aktive Teilnehmer werden vollständig zufällig auf 16 Gruppen à 5 verteilt.</p><div class="actions">
+        <button class="btn" id="drawBtn" ${state.tournament.drawLocked?'disabled':''}>${drawn?'Neu auslosen':'Jetzt auslosen'}</button>
+        <button class="btn btn-secondary" id="toggleLockBtn" ${!drawn?'disabled':''}>${state.tournament.drawLocked?'Auslosung entsperren':'Auslosung sperren'}</button>
+      </div><p class="small muted">Nach Veröffentlichung wird eine Neuauslosung später mit zusätzlicher Sicherheitsabfrage versehen. In diesem MVP ist sie durch die Sperre geschützt.</p></div>
+      <div class="card"><h3>Veröffentlichung</h3><p class="muted">Auslosung und Veröffentlichung sind getrennt. Erst veröffentlichen, wenn alles kontrolliert wurde.</p><div class="actions"><button class="btn btn-success" id="publishBtn" ${!drawn||state.tournament.published?'disabled':''}>Turnierplan veröffentlichen</button></div><p class="small muted">Status: <strong>${state.tournament.published?'veröffentlicht':'nur intern sichtbar'}</strong></p></div>
+    </div>
+    ${drawn?`<div class="group-grid" style="margin-top:18px">${GROUPS.map(g=>renderDrawGroup(g)).join('')}</div>`:`<div class="empty" style="margin-top:18px">Noch keine Auslosung vorhanden.</div>`}`;
+  }
+  function renderDrawGroup(g){
+    const gr=state.groups[g];
+    return `<div class="group-card"><h3><span>Gruppe ${g}</span><span class="badge">Board ${gr.board}</span></h3>${gr.playerIds.map((id,i)=>{const p=getPlayer(id);return `<div class="player-line"><span>${i+1}. <span class="player-name">${esc(playerName(p))}</span>${p.dartName?` <span class="dartname">„${esc(p.dartName)}“</span>`:''}</span><button class="btn btn-ghost btn-small" data-swap-player="${id}" data-group="${g}">Tauschen</button></div>`}).join('')}</div>`;
+  }
+
+  function renderGroups(){
+    if(!Object.keys(state.groups).length) return `<div class="empty">Bitte zuerst eine Auslosung durchführen.</div>`;
+    const tabs=GROUPS.map(g=>`<button class="${currentGroup===g?'active':''}" data-group-tab="${g}">${g}</button>`).join('');
+    const g=state.groups[currentGroup], st=standings(currentGroup), warning=groupTieWarning(currentGroup);
+    return `<div class="tabs">${tabs}</div>
+      ${warning?`<div class="notice warning" style="margin-bottom:14px">⚠ In Gruppe ${currentGroup} besteht ein nicht automatisch auflösbarer Mehrfach-Gleichstand. Das vorgesehene Stechen kann gespielt und die Reihenfolge anschließend manuell festgelegt werden. <button class="btn btn-warning btn-small" data-manual-rank="${currentGroup}" style="margin-left:8px">Reihenfolge festlegen</button></div>`:''}
+      <div class="grid grid-2">
+        <div class="card"><div class="section-head"><h3>Tabelle Gruppe ${currentGroup}</h3><span class="badge">Board ${g.board}</span></div><div class="table-wrap"><table class="table" style="min-width:0"><thead><tr><th>#</th><th>Spieler</th><th>Sp.</th><th>Siege</th><th>N.</th></tr></thead><tbody>${st.map((r,i)=>`<tr><td>${i+1}</td><td><strong>${esc(playerName(getPlayer(r.id)))}</strong></td><td>${r.played}</td><td>${r.wins}</td><td>${r.losses}</td></tr>`).join('')}</tbody></table></div></div>
+        <div class="card"><h3>Spiele</h3>${g.matches.map((m,i)=>`<div class="player-line"><span><span class="muted">${i+1}.</span> ${esc(playerName(getPlayer(m.playerA)))} – ${esc(playerName(getPlayer(m.playerB)))}</span><span>${m.status==='completed'?`<strong>${esc(playerName(getPlayer(m.winnerId)))}</strong> ✓`:m.status==='running'?'<span class="badge badge-success">läuft</span>':'<span class="muted">offen</span>'}</span></div>`).join('')}</div>
+      </div>`;
+  }
+
+  function renderBoards(){
+    if(!Object.keys(state.groups).length) return `<div class="empty">Bitte zuerst auslosen.</div>`;
+    return `<div class="tabs">${Array.from({length:6},(_,i)=>`<button data-board-tab="${i+1}" class="${selectedBoard===i+1?'active':''}">Board ${i+1}</button>`).join('')}</div>${renderBoardControl(selectedBoard)}`;
+  }
+  function renderBoardControl(board){
+    const cur=boardMatch(board,0), next=boardMatch(board,1), last=state.lastCompletedByBoard[board];
+    if(!cur) return `<div class="card"><h3>Board ${board}</h3><div class="empty">Alle Gruppenspiele auf diesem Board sind abgeschlossen.</div>${last?`<div class="actions" style="margin-top:12px"><button class="btn btn-warning" data-undo-board="${board}">Letztes Ergebnis korrigieren</button></div>`:''}</div>`;
+    const pa=getPlayer(cur.playerA),pb=getPlayer(cur.playerB);
+    return `<div class="board-control"><div class="card"><div class="section-head"><div><span class="badge">Board ${board}</span><h3 style="margin-top:8px">Aktuelles Spiel · Gruppe ${cur.group}</h3></div><span class="badge ${cur.status==='running'?'badge-success':'badge-muted'}">${cur.status==='running'?'läuft':'bereit'}</span></div>
+      <div class="score-box"><div class="score-player"><div class="name">${esc(playerName(pa))}</div>${pa.dartName?`<div class="dartname">„${esc(pa.dartName)}“</div>`:''}</div><div class="versus">VS</div><div class="score-player"><div class="name">${esc(playerName(pb))}</div>${pb.dartName?`<div class="dartname">„${esc(pb.dartName)}“</div>`:''}</div></div>${cur.status==='running'&&cur.startedAt?`<div class="live-strip"><span class="status-dot ok"></span><span class="live-duration" data-started-at="${cur.startedAt}">${elapsedText(cur.startedAt)}</span></div>`:''}
+      ${cur.status==='pending'?`<button class="btn btn-success btn-lg" data-start-match="${board}">Spiel starten</button>`:`<div class="big-choice"><button class="btn btn-success" data-win="${pa.id}" data-match="${cur.id}" data-board="${board}">${esc(pa.firstName)} gewinnt</button><button class="btn btn-success" data-win="${pb.id}" data-match="${cur.id}" data-board="${board}">${esc(pb.firstName)} gewinnt</button></div>`}
+      ${last?`<div class="actions" style="margin-top:14px"><button class="btn btn-warning btn-small" data-undo-board="${board}">Letztes Ergebnis korrigieren</button></div>`:''}
+      </div><div class="card card-subtle"><h3>Als Nächstes</h3>${next?`<div class="match-main">${esc(playerName(getPlayer(next.playerA)))}<br><span class="muted">gegen</span><br>${esc(playerName(getPlayer(next.playerB)))}</div><div class="small muted">Gruppe ${next.group}</div>`:`<div class="empty">Kein weiteres Spiel</div>`}<hr style="border:0;border-top:1px solid var(--border);margin:18px 0"><h3>Board-Reihenfolge</h3><p class="small muted">${BOARD_GROUPS[board].map(g=>`Gruppe ${g}`).join(' → ')} → …</p><p class="small muted">Fortschritt: ${state.boardPointers[board]} / ${(state.boardSchedules[board]||[]).length}</p></div></div>`;
+  }
+
+  function renderKnockout(){
+    refreshKnockoutSeeds();
+    const rounds=[['r32','Letzte 32'],['r16','Achtelfinale'],['qf','Viertelfinale'],['sf','Halbfinale'],['final','Finale']];
+    return `<div class="notice" style="margin-bottom:14px">Der feste Baum ist hinterlegt. Qualifizierte Spieler werden automatisch eingetragen, sobald ihre Gruppe eindeutig beendet ist.</div><div class="bracket">${rounds.map(([key,label])=>`<div class="round"><h3>${label}</h3>${(state.knockout[key]||[]).map(m=>`<div class="bracket-match"><div class="tiny muted">${m.source||m.id} · BO${m.bestOf}</div><div class="bracket-player ${m.winnerId===m.playerA?'winner':''}">${m.playerA?esc(playerName(getPlayer(m.playerA),true)):'–'}</div><div class="bracket-player ${m.winnerId===m.playerB?'winner':''}">${m.playerB?esc(playerName(getPlayer(m.playerB),true)):'–'}</div></div>`).join('')}</div>`).join('')}</div><div class="card" style="margin-top:16px"><h3>Spiel um Platz 3</h3>${state.knockout.third.map(m=>`<div>${m.playerA?esc(playerName(getPlayer(m.playerA),true)):'–'} gegen ${m.playerB?esc(playerName(getPlayer(m.playerB),true)):'–'} · BO7 · Board 4</div>`).join('')}</div>`;
+  }
+
+  function renderBeamer(fullscreen=false){
+    const done=allGroupMatches().filter(m=>m.status==='completed').length;
+    return `<div class="beamer ${fullscreen?'beamer-full':''}"><div class="hero"><div><div class="eyebrow">Live · 3. Alpirsbacher Steeldartscup</div><h3>${state.tournament.phase}</h3></div><div class="right"><strong>${done} / ${allGroupMatches().length||160}</strong><div class="small muted">Gruppenspiele</div></div></div><div class="beamer-board-grid">${Array.from({length:6},(_,i)=>{const b=i+1,c=boardMatch(b,0),n=boardMatch(b,1);return `<div class="beamer-board"><div class="board-number">Board ${b}</div><div class="small muted">${c?`Gruppe ${c.group}${c.status==='running'&&c.startedAt?` · <span class="live-duration" data-started-at="${c.startedAt}">${elapsedText(c.startedAt)}</span>`:''}`:'Fertig'}</div><div class="current">${c?`${esc(playerName(getPlayer(c.playerA)))}<br><span class="muted">vs.</span><br>${esc(playerName(getPlayer(c.playerB)))}`:'–'}</div><div class="next"><strong>Als Nächstes</strong><br>${n?`${esc(playerName(getPlayer(n.playerA)))} – ${esc(playerName(getPlayer(n.playerB)))}`:'–'}</div></div>`}).join('')}</div></div><p class="small muted" style="margin-top:10px">Später rotiert diese Ansicht automatisch zwischen Boards, Tabellen und KO-Baum.</p>`;
+  }
+
+  function renderSync(){
+    const active=state.participants.filter(p=>p.active&&!p.waitlist).length; const wait=state.participants.filter(p=>p.waitlist).length;
+    return `<div class="grid grid-2"><div class="card"><h3>Schnittstelle zur Anmeldeseite</h3><p>Dieser MVP verwendet lokale Testdaten. Für die spätere gemeinsame Domain ist die Teilnehmer-ID bereits als eindeutiger Schlüssel vorgesehen.</p><div class="notice">Geplante Felder: ID, Vorname, Nachname, optional Dartname, E-Mail, optional Telefonnummer, Anmeldestatus und Zeitstempel.</div><div class="actions" style="margin-top:14px"><button class="btn btn-secondary" id="fakeSyncBtn">Test-Synchronisierung</button></div></div><div class="card"><h3>Aktueller Datenbestand</h3><div class="grid grid-3"><div class="metric"><span class="label">Aktiv</span><span class="value">${active}</span></div><div class="metric"><span class="label">Nachrücker</span><span class="value">${wait}</span></div><div class="metric"><span class="label">Quelle</span><span class="value" style="font-size:18px">Demo</span></div></div><p class="small muted">Nach Veröffentlichung sollen externe Änderungen nicht unkontrolliert in den laufenden Turnierplan eingreifen.</p></div></div>`;
+  }
+
+  function bindViewHandlers(){
+    document.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>{currentView=b.dataset.goto;render();});
+    document.querySelectorAll('[data-board-open]').forEach(b=>b.onclick=()=>{selectedBoard=Number(b.dataset.boardOpen);currentView='boards';render();});
+    document.getElementById('startTournamentBtn')?.addEventListener('click', startTournament);
+
+    document.getElementById('checkAllBtn')?.addEventListener('click',()=>{state.participants.filter(p=>p.active&&!p.waitlist).forEach(p=>p.checkinStatus='eingecheckt');audit('Alle Teilnehmer für Test eingecheckt.');saveState();render();toast('Alle Teilnehmer eingecheckt.');});
+    document.querySelectorAll('[data-checkin]').forEach(b=>b.onclick=()=>{const p=getPlayer(b.dataset.checkin);p.checkinStatus=p.checkinStatus==='eingecheckt'?'angemeldet':'eingecheckt';audit(`${playerName(p)}: Check-in auf ${p.checkinStatus} gesetzt.`);saveState();render();});
+    bindSearch('checkinSearch','checkinRows'); bindSearch('participantSearch','participantRows');
+
+    document.getElementById('addParticipantBtn')?.addEventListener('click',()=>openPlayerModal());
+    document.querySelectorAll('[data-edit-player]').forEach(b=>b.onclick=()=>openPlayerModal(getPlayer(b.dataset.editPlayer)));
+
+    document.getElementById('drawBtn')?.addEventListener('click',()=>{ if(state.tournament.published&&!confirm('Der Plan ist veröffentlicht. Wirklich komplett neu auslosen?')) return; performDraw(); });
+    document.getElementById('toggleLockBtn')?.addEventListener('click',()=>{state.tournament.drawLocked=!state.tournament.drawLocked;audit(`Auslosung ${state.tournament.drawLocked?'gesperrt':'entsperrt'}.`);saveState();render();});
+    document.getElementById('publishBtn')?.addEventListener('click',publishTournament);
+    document.querySelectorAll('[data-swap-player]').forEach(b=>b.onclick=()=>openSwapModal(b.dataset.group,b.dataset.swapPlayer));
+
+    document.querySelectorAll('[data-group-tab]').forEach(b=>b.onclick=()=>{currentGroup=b.dataset.groupTab;render();});
+    document.querySelectorAll('[data-manual-rank]').forEach(b=>b.onclick=()=>openManualRankModal(b.dataset.manualRank));
+
+    document.querySelectorAll('[data-board-tab]').forEach(b=>b.onclick=()=>{selectedBoard=Number(b.dataset.boardTab);render();});
+    document.querySelectorAll('[data-start-match]').forEach(b=>b.onclick=()=>startCurrentMatch(Number(b.dataset.startMatch)));
+    document.querySelectorAll('[data-win]').forEach(b=>b.onclick=()=>completeGroupMatch(Number(b.dataset.board),b.dataset.match,b.dataset.win));
+    document.querySelectorAll('[data-undo-board]').forEach(b=>b.onclick=()=>{if(confirm('Das unmittelbar letzte Ergebnis dieses Boards wirklich zurücksetzen?'))undoLastBoardResult(Number(b.dataset.undoBoard));});
+
+    document.getElementById('fakeSyncBtn')?.addEventListener('click',()=>toast('Demo-Sync ausgeführt – keine externen Änderungen vorhanden.'));
+  }
+
+  function bindSearch(inputId,tbodyId){
+    const input=document.getElementById(inputId), body=document.getElementById(tbodyId); if(!input||!body) return;
+    input.oninput=()=>{const q=input.value.trim().toLowerCase();body.querySelectorAll('tr').forEach(tr=>tr.style.display=!q||tr.dataset.search.includes(q)?'':'none');};
+  }
+
+  function openModal(html){ document.getElementById('modalRoot').innerHTML=`<div class="modal-backdrop" id="modalBackdrop"><div class="modal">${html}</div></div>`; document.getElementById('modalBackdrop').onclick=e=>{if(e.target.id==='modalBackdrop')closeModal();}; }
+  function closeModal(){ document.getElementById('modalRoot').innerHTML=''; }
+
+  function openPlayerModal(p=null){
+    const id=p?.id||`P${String(state.participants.length+1).padStart(3,'0')}`;
+    openModal(`<h3>${p?'Teilnehmer bearbeiten':'Teilnehmer hinzufügen'}</h3><div class="form-grid">
+      <div class="form-field"><label>Vorname</label><input id="mFirst" class="input" value="${esc(p?.firstName||'')}"></div>
+      <div class="form-field"><label>Nachname</label><input id="mLast" class="input" value="${esc(p?.lastName||'')}"></div>
+      <div class="form-field"><label>Dartname (optional)</label><input id="mDart" class="input" value="${esc(p?.dartName||'')}"></div>
+      <div class="form-field"><label>E-Mail</label><input id="mMail" class="input" value="${esc(p?.email||'')}"></div>
+      <div class="form-field"><label>Telefon (optional)</label><input id="mPhone" class="input" value="${esc(p?.phone||'')}"></div>
+      <div class="form-field"><label>Status</label><select id="mWait" class="select"><option value="active" ${!p?.waitlist?'selected':''}>Aktiver Teilnehmer</option><option value="wait" ${p?.waitlist?'selected':''}>Nachrückerliste</option><option value="inactive" ${p&&!p.active?'selected':''}>Inaktiv</option></select></div>
+    </div><div class="modal-footer"><button class="btn btn-ghost" id="mCancel">Abbrechen</button><button class="btn" id="mSave">Speichern</button></div>`);
+    document.getElementById('mCancel').onclick=closeModal;
+    document.getElementById('mSave').onclick=()=>{
+      const first=document.getElementById('mFirst').value.trim(),last=document.getElementById('mLast').value.trim(); if(!first||!last) return toast('Vor- und Nachname sind erforderlich.','warning');
+      const mode=document.getElementById('mWait').value;
+      const obj=p||{id,registrationStatus:'bestätigt',checkinStatus:'angemeldet',source:'Manuell'};
+      Object.assign(obj,{firstName:first,lastName:last,dartName:document.getElementById('mDart').value.trim(),email:document.getElementById('mMail').value.trim(),phone:document.getElementById('mPhone').value.trim(),waitlist:mode==='wait',active:mode!=='inactive'});
+      if(!p) state.participants.push(obj); audit(`${p?'Teilnehmer bearbeitet':'Teilnehmer hinzugefügt'}: ${playerName(obj)}.`); saveState();closeModal();render();toast('Teilnehmer gespeichert.');
+    };
+  }
+
+  function openSwapModal(group,playerId){
+    const p=getPlayer(playerId);
+    const candidates=state.participants.filter(x=>x.active&&!x.waitlist&&x.id!==playerId);
+    openModal(`<h3>${esc(playerName(p))} tauschen</h3><p class="muted">Wähle einen anderen aktiven Teilnehmer. Die beiden Gruppenslots werden getauscht.</p><input id="swapSearch" class="input" placeholder="Name suchen …"><div style="max-height:380px;overflow:auto;margin-top:10px" id="swapList">${candidates.map(c=>`<button class="btn btn-ghost" style="display:block;width:100%;text-align:left;margin-bottom:6px" data-swap-target="${c.id}">${esc(playerName(c))}</button>`).join('')}</div><div class="modal-footer"><button class="btn btn-ghost" id="swapCancel">Abbrechen</button></div>`);
+    document.getElementById('swapCancel').onclick=closeModal;
+    const search=document.getElementById('swapSearch'); search.oninput=()=>{const q=search.value.toLowerCase();document.querySelectorAll('[data-swap-target]').forEach(b=>b.style.display=b.textContent.toLowerCase().includes(q)?'block':'none');};
+    document.querySelectorAll('[data-swap-target]').forEach(b=>b.onclick=()=>swapPlayers(playerId,b.dataset.swapTarget));
+  }
+  function swapPlayers(a,b){
+    let slotA=null,slotB=null;
+    for(const g of GROUPS){ const gr=state.groups[g]; if(!gr) continue; const ia=gr.playerIds.indexOf(a),ib=gr.playerIds.indexOf(b); if(ia>=0)slotA=[g,ia]; if(ib>=0)slotB=[g,ib]; }
+    if(!slotA||!slotB) return toast('Beide Spieler müssen ausgelost sein.','warning');
+    const [ga,ia]=slotA,[gb,ib]=slotB;
+    state.groups[ga].playerIds[ia]=b; state.groups[gb].playerIds[ib]=a;
+    state.groups[ga].matches=roundRobinMatches(state.groups[ga].playerIds,ga); state.groups[gb].matches=roundRobinMatches(state.groups[gb].playerIds,gb);
+    for(const board of [state.groups[ga].board,state.groups[gb].board]){
+      const groupNames=BOARD_GROUPS[board],schedule=[];for(let i=0;i<10;i++)for(const g of groupNames)schedule.push(state.groups[g].matches[i].id);state.boardSchedules[board]=schedule;state.boardPointers[board]=0;state.lastCompletedByBoard[board]=null;
+    }
+    audit(`${playerName(getPlayer(a))} und ${playerName(getPlayer(b))} wurden getauscht.`); saveState();closeModal();render();toast('Spieler wurden getauscht.','warning');
+  }
+
+  function openManualRankModal(group){
+    const st=standings(group); const g=state.groups[group];
+    openModal(`<h3>Gruppe ${group}: Reihenfolge nach Stechen</h3><p class="muted">Trage die endgültige Reihenfolge Platz 1–5 ein. Diese überschreibt nur die Tabellenreihenfolge, nicht die bereits gespeicherten Ergebnisse.</p>${[1,2,3,4,5].map((n,i)=>`<div class="form-field" style="margin-bottom:10px"><label>Platz ${n}</label><select class="select manual-rank-select" data-rank="${i}">${g.playerIds.map(id=>`<option value="${id}" ${st[i]?.id===id?'selected':''}>${esc(playerName(getPlayer(id)))}</option>`).join('')}</select></div>`).join('')}<div class="modal-footer"><button class="btn btn-ghost" id="rankCancel">Abbrechen</button><button class="btn" id="rankSave">Speichern</button></div>`);
+    document.getElementById('rankCancel').onclick=closeModal;
+    document.getElementById('rankSave').onclick=()=>{const ids=[...document.querySelectorAll('.manual-rank-select')].map(s=>s.value);if(new Set(ids).size!==5)return toast('Jeder Spieler darf nur einmal vorkommen.','warning');state.manualGroupOrder[group]=ids;audit(`Manuelle Reihenfolge für Gruppe ${group} nach Stechen gesetzt.`);refreshKnockoutSeeds();saveState();closeModal();render();toast('Reihenfolge gespeichert.');};
+  }
+
+  window.steeldartsSetTestMode=setDisplayMode;
+  document.getElementById('resetDemoBtn').onclick=()=>{if(confirm('Alle Teständerungen löschen und den Demo-Stand wiederherstellen?'))resetDemo();};
+  setInterval(updateLiveDurations,15000);
+  render();
+})();
+
+</script>
 </body>
 </html>
