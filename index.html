@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>3. Alpirsbacher Steeldartscup – Turnierleitung</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=3" />
 </head>
 <body>
   <div class="app-shell">
@@ -37,7 +37,14 @@
               <option value="player">Spieler</option>
               <option value="beamer">Beamer</option>
             </select>
+            <div class="mode-quick-buttons" aria-label="Testansichten">
+              <button type="button" data-test-mode="admin">Leitung</button>
+              <button type="button" data-test-mode="writer">Schreiber</button>
+              <button type="button" data-test-mode="player">Spieler</button>
+              <button type="button" data-test-mode="beamer">Beamer</button>
+            </div>
           </div>
+          <span class="badge badge-muted" title="Build-Version">v3</span>
           <span id="publishBadge" class="badge badge-muted">Nicht veröffentlicht</span>
           <span id="phaseBadge" class="badge">Vorbereitung</span>
         </div>
@@ -50,6 +57,6 @@
   <div id="modalRoot"></div>
   <div id="toastRoot" class="toast-root"></div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=3"></script>
 </body>
 </html>

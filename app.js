@@ -365,6 +365,7 @@
     renderNav(); updateBadges();
     const select=document.getElementById('testViewSelect');
     if(select) select.value=displayMode;
+    document.querySelectorAll('[data-test-mode]').forEach(btn=>btn.classList.toggle('active',btn.dataset.testMode===displayMode));
     const content=document.getElementById('content');
     if(displayMode==='writer'){
       document.getElementById('pageTitle').textContent=`Schreiberansicht · Board ${selectedBoard}`;
@@ -386,9 +387,16 @@
     updateLiveDurations();
   }
 
+  function setDisplayMode(mode){
+    if(!['admin','writer','player','beamer'].includes(mode)) return;
+    displayMode=mode;
+    render();
+  }
+
   function bindModeHandlers(){
     const select=document.getElementById('testViewSelect');
-    if(select) select.onchange=()=>{displayMode=select.value;render();};
+    if(select) select.onchange=(e)=>setDisplayMode(e.target.value);
+    document.querySelectorAll('[data-test-mode]').forEach(btn=>btn.onclick=()=>setDisplayMode(btn.dataset.testMode));
     document.querySelectorAll('[data-test-board]').forEach(b=>b.onclick=()=>{selectedBoard=Number(b.dataset.testBoard);render();});
     document.getElementById('playerTestSelect')?.addEventListener('change',e=>{selectedPlayerId=e.target.value;render();});
     document.querySelectorAll('[data-player-pref]').forEach(el=>el.onchange=()=>{
@@ -647,6 +655,7 @@
     document.getElementById('rankSave').onclick=()=>{const ids=[...document.querySelectorAll('.manual-rank-select')].map(s=>s.value);if(new Set(ids).size!==5)return toast('Jeder Spieler darf nur einmal vorkommen.','warning');state.manualGroupOrder[group]=ids;audit(`Manuelle Reihenfolge für Gruppe ${group} nach Stechen gesetzt.`);refreshKnockoutSeeds();saveState();closeModal();render();toast('Reihenfolge gespeichert.');};
   }
 
+  window.steeldartsSetTestMode=setDisplayMode;
   document.getElementById('resetDemoBtn').onclick=()=>{if(confirm('Alle Teständerungen löschen und den Demo-Stand wiederherstellen?'))resetDemo();};
   setInterval(updateLiveDurations,15000);
   render();

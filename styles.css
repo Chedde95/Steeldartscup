@@ -92,3 +92,9 @@ button{cursor:pointer}
   .player-tabs{display:grid;grid-template-columns:repeat(2,1fr)}.player-tabs button{width:100%}
   .player-table{min-width:520px}.compact-bracket{grid-template-columns:1fr}
 }
+
+/* v3 test-mode controls */
+.mode-quick-buttons{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.mode-quick-buttons button{border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:8px;padding:5px 8px;font:inherit;font-size:11px;cursor:pointer}
+.mode-quick-buttons button:hover,.mode-quick-buttons button.active{background:rgba(255,255,255,.08);color:var(--text);border-color:rgba(255,255,255,.18)}
+@media(max-width:900px){.mode-quick-buttons{display:none}}
